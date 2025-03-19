@@ -1,5 +1,5 @@
 import 'package:attendance_app/component/routes.dart';
-import 'package:attendance_app/core/image_picker/amqp_conn.dart';
+import 'package:attendance_app/core/amqp_conn.dart';
 import 'package:attendance_app/view/auth/login.dart';
 import 'package:attendance_app/view/auth/register.dart';
 import 'package:firebase_core/firebase_core.dart';
