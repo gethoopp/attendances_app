@@ -36,16 +36,14 @@ extension StringValidate on String? {
     return null;
   }
 
-  String? get validateConfirmPassword {
+  String? get validateRfid {
     if (this == null) {
       return null;
     }
 
     // Check if validatePassword is null
-    if (validatePassword != null || validatePassword!.length != this!.length) {
-      if (this != validatePassword) {
-        return "Password tidak sama";
-      }
+    if (this == null) {
+      return "RFID tidak boleh kosong";
     }
     return null;
   }
@@ -55,7 +53,7 @@ extension StringValidate on String? {
       return null;
     }
 
-    if (this!.length < 1) {
+    if (this!.isEmpty) {
       return "Nama Pengguna Minimal $minLength Karakter";
     }
 
@@ -88,7 +86,7 @@ extension StringValidate on String? {
       return null;
     }
 
-    if (this!.length < 1) {
+    if (this!.isEmpty) {
       return "Nama Pengguna Minimal $minLength Karakter";
     }
 
