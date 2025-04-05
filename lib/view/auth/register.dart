@@ -3,6 +3,7 @@ import 'package:attendance_app/controller/repository/users/users.dart';
 import 'package:attendance_app/extension/string_validate.dart';
 import 'package:attendance_app/view/homepage/dashborad_screen.dart';
 import 'package:attendance_app/widget/button.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -97,12 +98,18 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent> {
           BlocListener<RegisterUserCubit, RegisterUserState>(
             listener: (context, state) {
               if (state is RegisterUserSucces) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DashboradScreen(),
-                  ),
-                );
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const DashboradScreen(),
+                //   ),
+                // );
+                AwesomeDialog(
+                        context: context,
+                        title: 'Success',
+                        desc: 'Register Success',
+                        dialogType: DialogType.success)
+                    .show();
               } else if (state is RegisterUserErr) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -219,8 +226,6 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent> {
                                   email: emailContoller.text,
                                   password: passContoller.text,
                                 );
-
-                            debugPrint("Berhasil ditekan");
                           },
                               size,
                               text: 'Register',

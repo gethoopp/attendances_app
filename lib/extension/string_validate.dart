@@ -37,12 +37,20 @@ extension StringValidate on String? {
   }
 
   String? get validateRfid {
-    if (this == null) {
-      return null;
-    }
+    // if (this == null) {
+    //   return null;
+
+    // if (!RegExp(r"^[0-9=]{10,12}$").hasMatch(this!)) {
+    //   return "RFID tidak valid";
+
+    // }
 
     // Check if validatePassword is null
     if (this == null) {
+      return "RFID tidak boleh kosong";
+    }
+
+    if (this!.isEmpty) {
       return "RFID tidak boleh kosong";
     }
     return null;
