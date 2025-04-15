@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 class GetUserData implements BaseUserRepository {
   final dio = Dio();
+
   @override
   Future<void> getUserData(int id) {
     throw UnimplementedError();

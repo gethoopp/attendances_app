@@ -82,8 +82,7 @@ class _DashboradScreenState extends State<DashboradScreen> {
 
     var stream = http.ByteStream(Stream.castFrom(imageResult!.openRead()));
     var length = await imageResult!.length();
-   final uri = Uri.parse("http://192.168.1.57:8080/api/upload");
-
+    final uri = Uri.parse("http://192.168.1.57:8080/api/upload");
 
     var request = http.MultipartRequest("POST", uri);
     request.files.add(http.MultipartFile("image", stream, length,

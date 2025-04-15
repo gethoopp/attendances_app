@@ -1,7 +1,6 @@
 import 'package:attendance_app/bloc/register/cubit/register_user_cubit.dart';
 import 'package:attendance_app/controller/repository/users/users.dart';
 import 'package:attendance_app/extension/string_validate.dart';
-import 'package:attendance_app/view/homepage/dashborad_screen.dart';
 import 'package:attendance_app/widget/button.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
