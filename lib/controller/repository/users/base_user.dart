@@ -3,4 +3,6 @@ abstract class BaseUserRepository {
   Future<void> inputDataRfid();
   Future<dynamic> registerUserData(int cardNumber, String firstName,
       String lastName, String departement, String email, String pass);
+
+  Future<dynamic> loginUser(String email, String pass);
 }

@@ -32,12 +32,28 @@ class GetUserData implements BaseUserRepository {
           ));
 
       if (result.statusCode == 200) {
-        print("User registered successfully: ${result.data}");
+        return result.data["Message"];
       } else {
         return;
       }
     } catch (e) {
       print("Exception occurred: ${e.toString()}");
     }
+  }
+
+  @override
+  Future<void> loginUser(String email, String pass) async {
+    try {
+      var response = await dio.post("http://192.168.1.21:8080/api/login",
+          data: {
+            "email_user": email,
+            "password_user": pass,
+          },
+          options: Options(
+            contentType: 'application/json',
+          ));
+
+      return response.data["token"];
+    } catch (e) {}
   }
 }
