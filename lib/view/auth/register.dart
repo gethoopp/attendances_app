@@ -51,7 +51,7 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<RegisterUserCubit>().registerUser;
+    // context.read<RegisterUserCubit>().registerUser;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -97,16 +97,10 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent> {
           BlocListener<RegisterUserCubit, RegisterUserState>(
             listener: (context, state) {
               if (state is RegisterUserSucces) {
-                // Navigator.pushReplacement(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const DashboradScreen(),
-                //   ),
-                // );
                 AwesomeDialog(
                         context: context,
                         title: 'Success',
-                        desc: 'Register Success',
+                        desc: state.data,
                         dialogType: DialogType.success)
                     .show();
               } else if (state is RegisterUserErr) {
