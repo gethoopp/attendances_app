@@ -1,5 +1,5 @@
-import 'package:attendance_app/bloc/register/cubit/register_user_cubit.dart';
-import 'package:attendance_app/controller/repository/users/users.dart';
+import 'package:attendance_app/bloc/register/register_user_data/auth_user_cubit.dart';
+import 'package:attendance_app/repository/users/users.dart';
 import 'package:attendance_app/extension/string_validate.dart';
 import 'package:attendance_app/widget/button.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -16,7 +16,7 @@ class RegisterScreen extends StatelessWidget {
     return RepositoryProvider.value(
       value: userRepository,
       child: BlocProvider(
-        create: (context) => RegisterUserCubit(userRepository)..registerUser,
+        create: (context) => AuthUserCubit(userRepository)..registerUser,
         child: _RegisterScreenContent(),
       ),
     );
@@ -94,16 +94,16 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent> {
               )
             ],
           ),
-          BlocListener<RegisterUserCubit, RegisterUserState>(
+          BlocListener<AuthUserCubit, AuthUserState>(
             listener: (context, state) {
-              if (state is RegisterUserSucces) {
+              if (state is AuthUserSucces) {
                 AwesomeDialog(
                         context: context,
                         title: 'Success',
                         desc: state.data,
                         dialogType: DialogType.success)
                     .show();
-              } else if (state is RegisterUserErr) {
+              } else if (state is AuthUserErr) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message),
@@ -211,7 +211,7 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent> {
                               ]),
                           const SizedBox(height: 25),
                           buttonLoginTap(onTap: () {
-                            context.read<RegisterUserCubit>().registerUser(
+                            context.read<AuthUserCubit>().registerUser(
                                   cardNumber: int.parse(rfidNumber.text),
                                   firstName: firstName.text,
                                   lastName: lastName.text,

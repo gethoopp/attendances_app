@@ -1,4 +1,4 @@
-import 'package:attendance_app/controller/repository/faceRecog/base_images.dart';
+import 'package:attendance_app/repository/faceRecog/base_images.dart';
 import 'package:dio/dio.dart';
 
 class FaceRecognition implements BaseImageRepository {
@@ -8,12 +8,10 @@ class FaceRecognition implements BaseImageRepository {
     //mengirim data gambar ke database untuk di proses
     throw UnimplementedError();
   }
-  
+
   @override
   Future<void> getImages() {
     //mengambil data gambar dari database
     throw UnimplementedError();
   }
-
-  
 }

@@ -1,4 +1,4 @@
-import 'package:attendance_app/controller/repository/users/users.dart';
+import 'package:attendance_app/repository/users/users.dart';
 import 'package:dio/dio.dart';
 
 class GetUserData implements BaseUserRepository {

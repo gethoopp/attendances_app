@@ -1,3 +1,4 @@
 {
-  "env": "env_project"
+  "env": "app_projects",
+  "previousFlutterSdk": "/Users/haliimpamungkasharjosuyono/.puro/envs/env_project/flutter"
 }

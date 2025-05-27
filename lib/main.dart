@@ -1,5 +1,5 @@
 import 'package:attendance_app/component/routes.dart';
-import 'package:attendance_app/core/amqp_conn.dart';
+import 'package:attendance_app/core/amqp_conn/amqp_conn.dart';
 import 'package:attendance_app/view/auth/login.dart';
 import 'package:attendance_app/view/auth/register.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
