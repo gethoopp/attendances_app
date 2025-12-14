@@ -1,5 +1,6 @@
 import 'package:attendance_app/repository/users/users.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_user_state.dart';
@@ -10,7 +11,8 @@ class AuthUserCubit extends Cubit<AuthUserState> {
   AuthUserCubit(this.userRepository) : super(AuthUserInitial());
 
   // Cubit untuk register user
-  Future<dynamic> registerUser({
+  Future<dynamic> registerUser(
+    BuildContext context, {
     required int cardNumber,
     required String firstName,
     required String lastName,
@@ -18,13 +20,13 @@ class AuthUserCubit extends Cubit<AuthUserState> {
     required String email,
     required String password,
   }) async {
-    emit(AuthUserInitial());
+    emit(AuthUserLoading());
     try {
       final result = await userRepository.registerUserData(
           cardNumber, firstName, lastName, department, email, password);
       emit(AuthUserSucces(result));
     } catch (e) {
-      emit(AuthUserErr(e.toString()));
+      emit(AuthUserErr(e.toString().replaceFirst('Exception: ', '')));
     }
   }
 
@@ -34,7 +36,7 @@ class AuthUserCubit extends Cubit<AuthUserState> {
     required String email,
     required String pass,
   }) async {
-    emit(AuthUserInitial());
+    emit(AuthUserLoading());
     try {
       final result = await userRepository.loginUser(email, pass);
       emit(AuthUserSucces(result));

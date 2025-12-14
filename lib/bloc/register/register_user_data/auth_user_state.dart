@@ -12,6 +12,8 @@ final class AuthUserSucces extends AuthUserState {
   List<Object> get props => [data];
 }
 
+final class AuthUserLoading extends AuthUserState {}
+
 final class AuthUserErr extends AuthUserState {
   final String message;
   AuthUserErr(this.message);

@@ -19,6 +19,25 @@ extension StringValidate on String? {
     return null;
   }
 
+  String? get validateDepartement {
+    if (this == null) {
+      return null;
+    }
+
+    // if (this!.isEmpty) {
+    //   return "Email tidak boleh kosong";
+    // }
+    if (!RegExp(r'^(Marketing|IT Departement)$').hasMatch(this!)) {
+      return "Departement Tidak Valid";
+    }
+
+    if (this!.length < 6) {
+      return "Masukan Departement yang valid";
+    }
+
+    return null;
+  }
+
   String? get validatePassword {
     if (this == null) {
       return null;
@@ -37,13 +56,13 @@ extension StringValidate on String? {
   }
 
   String? get validateRfid {
-    // if (this == null) {
-    //   return null;
+    if (this == null) {
+      return null;
+    }
 
-    // if (!RegExp(r"^[0-9=]{10,12}$").hasMatch(this!)) {
-    //   return "RFID tidak valid";
-
-    // }
+    if (RegExp(r"^[0-9=]{10,12}$").hasMatch(this!)) {
+      return "RFID tidak valid";
+    }
 
     // Check if validatePassword is null
     if (this == null) {

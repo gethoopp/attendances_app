@@ -1,8 +1,10 @@
+import 'package:attendance_app/component/url.dart';
 import 'package:attendance_app/repository/users/users.dart';
 import 'package:dio/dio.dart';
 
 class GetUserData implements BaseUserRepository {
-  final dio = Dio();
+  final dio =
+      Dio(BaseOptions(baseUrl: Url.baseUrl, sendTimeout: Duration(seconds: 2)));
 
   @override
   Future<void> getUserData(int id) {
@@ -18,7 +20,7 @@ class GetUserData implements BaseUserRepository {
   Future<void> registerUserData(int cardNumber, String firstName,
       String lastName, String departement, String email, String pass) async {
     try {
-      var result = await dio.post("http://192.168.1.21:8080/api/register",
+      var result = await dio.post(Url.registerUrl,
           data: {
             "rfid_id": cardNumber,
             "id_first_name": firstName,
@@ -33,11 +35,22 @@ class GetUserData implements BaseUserRepository {
 
       if (result.statusCode == 200) {
         return result.data["Message"];
+      } else if (result.statusCode != null && result.statusCode! >= 500) {
+        throw Exception(result.data['message']);
+      } else if (result.statusCode != null && result.statusCode! < 500) {
+        throw Exception(result.data['message']);
+      }
+    } on DioException catch (e) {
+      final statusCode = e.response?.statusCode ?? 0;
+      if (statusCode >= 500) {
+        throw Exception(e.response?.data["message"]);
+      } else if (statusCode < 500) {
+        throw Exception(e.response?.data['message']);
       } else {
-        return;
+        throw Exception(e.response?.data['message']);
       }
     } catch (e) {
-      print("Exception occurred: ${e.toString()}");
+      rethrow;
     }
   }
 

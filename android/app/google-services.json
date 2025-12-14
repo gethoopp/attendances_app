@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "80805426642",
+    "project_id": "hr-attendanc-eapp",
+    "storage_bucket": "hr-attendanc-eapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80805426642:android:f2cfba0bb0f37b22b1440b",
+        "android_client_info": {
+          "package_name": "com.android.attendance_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80805426642-0rs7pf4t2fn2n1a712iqaj398e9o21sp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuuVDTLFzaGpnwJiDhUeXvejtZOOT1zW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80805426642-0rs7pf4t2fn2n1a712iqaj398e9o21sp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "80805426642-6ldid40q1bfel8srgpfa1t1la4veuihf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.attendancesApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

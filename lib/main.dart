@@ -4,6 +4,7 @@ import 'package:attendance_app/view/auth/login.dart';
 import 'package:attendance_app/view/auth/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,20 +24,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-          statusBarBrightness: Brightness.dark,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark),
-      child: MaterialApp(
-        initialRoute: Routes.login,
-        routes: {
-          Routes.login: (context) => LoginPage(),
-          Routes.register: (context) => RegisterScreen(),
-        },
-        debugShowCheckedModeBanner: false,
-        home: LoginPage(),
-      ),
-    );
+        value: SystemUiOverlayStyle(
+            statusBarBrightness: Brightness.dark,
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark),
+        child: ScreenUtilInit(
+          designSize: const Size(393, 852),
+          minTextAdapt: true,
+          builder: (context, child) {
+            return MaterialApp(
+              initialRoute: Routes.login,
+              routes: {
+                Routes.login: (context) => LoginPageScreen(),
+                Routes.register: (context) => RegisterScreenPage(),
+              },
+              debugShowCheckedModeBanner: false,
+              home: LoginPageScreen(),
+            );
+          },
+        ));
   }
 }
 

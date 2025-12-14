@@ -1,4 +1,4 @@
-package com.example.staffsyncs
+package com.android.attendance_app
 
 import io.flutter.embedding.android.FlutterActivity
 
