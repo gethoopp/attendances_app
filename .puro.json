@@ -1,4 +1,9 @@
 {
+<<<<<<< HEAD
   "env": "attend",
   "previousFlutterSdk": "/home/thisisslazar/Documents/project/attendance_app/.fvm/versions/3.27.0"
+=======
+  "env": "3.32.0",
+  "previousFlutterSdk": "/Users/haliimpamungkasharjosuyono/.puro/envs/env_project/flutter"
+>>>>>>> master
 }

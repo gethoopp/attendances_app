@@ -4,6 +4,11 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_linux
+<<<<<<< HEAD
+=======
+  rive_common
+  url_launcher_linux
+>>>>>>> master
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

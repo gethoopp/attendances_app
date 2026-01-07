@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
@@ -26,5 +27,21 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+=======
+import 'package:attendance_app/view/auth/register.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  testWidgets("Test Button Register", (WidgetTester tester) async {
+    await tester.pumpWidget(RegisterScreenPage());
+    final buttonFirstName = find.text("First Name");
+    final buttonRegister = find.text("Daftar");
+
+    expect(buttonFirstName, findsOneWidget);
+    await tester.tap(buttonFirstName);
+
+    await tester.pump();
+    expect(find.text("Masukkan email dengan benar"), findsOneWidget);
+>>>>>>> master
   });
 }

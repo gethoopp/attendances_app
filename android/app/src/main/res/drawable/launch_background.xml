@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@android:color/holo_blue_light" /> 
     <!-- Atau jika Anda ingin menggunakan warna khusus, pastikan untuk mendefinisikannya di colors.xml -->
     <!-- <item android:drawable="@color/your_custom_color" /> -->
+=======
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/white" />
+
+    <!-- You can insert your own image assets here -->
+    <!-- <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/launch_image" />
+    </item> -->
+>>>>>>> master
 </layer-list>
