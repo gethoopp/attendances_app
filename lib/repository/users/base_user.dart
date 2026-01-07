@@ -1,8 +1,10 @@
+import 'package:attendance_app/model/users_data/user.dart';
+
 abstract class BaseUserRepository {
-  Future<void> getUserData(int id);
+  Future<User> getUserData(int id, String token);
   Future<void> inputDataRfid();
-  Future<dynamic> registerUserData(int cardNumber, String firstName,
+  Future<String> registerUserData(int cardNumber, String firstName,
       String lastName, String departement, String email, String pass);
 
-  Future<dynamic> loginUser(String email, String pass);
+  Future<User> loginUser(String email, String pass);
 }

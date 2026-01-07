@@ -1,14 +1,38 @@
 import 'package:attendance_app/component/url.dart';
+import 'package:attendance_app/interceptor/dio_client_interceptor.dart';
+import 'package:attendance_app/model/users_data/user.dart';
 import 'package:attendance_app/repository/users/users.dart';
 import 'package:dio/dio.dart';
 
 class GetUserData implements BaseUserRepository {
-  final dio =
-      Dio(BaseOptions(baseUrl: Url.baseUrl, sendTimeout: Duration(seconds: 2)));
+  final dio = DioClientInterceptor.createDio();
 
   @override
-  Future<void> getUserData(int id) {
-    throw UnimplementedError();
+  Future<User> getUserData(int id, String token) async {
+    try {
+      var result = await dio.get(
+        Url.getUser,
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+        queryParameters: {"id_users": id},
+      );
+
+      return User.fromJson(result.data);
+    } on DioException catch (e) {
+      switch (e.response?.statusCode) {
+        case 404:
+          throw Exception(e.response?.data['message']);
+        case 402:
+          throw Exception(e.response?.data['message']);
+        case 500:
+          throw Exception(e.response?.data['message']);
+        case 409:
+          throw Exception(e.response?.data['message']);
+        default:
+          throw Exception(
+            e.response?.data['message'] ?? "Terjadi kesalahan",
+          );
+      }
+    }
   }
 
   @override
@@ -17,56 +41,65 @@ class GetUserData implements BaseUserRepository {
   }
 
   @override
-  Future<void> registerUserData(int cardNumber, String firstName,
+  Future<String> registerUserData(int cardNumber, String firstName,
       String lastName, String departement, String email, String pass) async {
     try {
-      var result = await dio.post(Url.registerUrl,
-          data: {
-            "rfid_id": cardNumber,
-            "id_first_name": firstName,
-            "id_last_name": lastName,
-            "id_departement": departement,
-            "email_user": email,
-            "password_user": pass
-          },
-          options: Options(
-            contentType: 'application/json',
-          ));
+      var result = await dio.post(
+        Url.registerUrl,
+        data: {
+          "rfid_id": cardNumber,
+          "id_first_name": firstName,
+          "id_last_name": lastName,
+          "id_departement": departement,
+          "email_user": email,
+          "password_user": pass
+        },
+      );
 
-      if (result.statusCode == 200) {
-        return result.data["Message"];
-      } else if (result.statusCode != null && result.statusCode! >= 500) {
-        throw Exception(result.data['message']);
-      } else if (result.statusCode != null && result.statusCode! < 500) {
-        throw Exception(result.data['message']);
-      }
+      return result.data["message"];
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode ?? 0;
-      if (statusCode >= 500) {
-        throw Exception(e.response?.data["message"]);
-      } else if (statusCode < 500) {
-        throw Exception(e.response?.data['message']);
-      } else {
-        throw Exception(e.response?.data['message']);
+      switch (e.response?.statusCode) {
+        case 404:
+          throw Exception(e.response?.data['message']);
+        case 402:
+          throw Exception(e.response?.data['message']);
+        case 500:
+          throw Exception(e.response?.data['message']);
+        case 409:
+          throw Exception(e.response?.data['message']);
+        default:
+          throw Exception(
+            e.response?.data['message'] ?? "Terjadi kesalahan",
+          );
       }
-    } catch (e) {
-      rethrow;
     }
   }
 
   @override
-  Future<void> loginUser(String email, String pass) async {
+  Future<User> loginUser(String email, String pass) async {
     try {
-      var response = await dio.post("http://192.168.1.21:8080/api/login",
-          data: {
-            "email_user": email,
-            "password_user": pass,
-          },
-          options: Options(
-            contentType: 'application/json',
-          ));
+      var response = await dio.post(
+        Url.loginUrl,
+        data: {
+          "email_user": email,
+          "password_user": pass,
+        },
+      );
 
-      return response.data["token"];
-    } catch (e) {}
+      return User.fromJson(response.data);
+    } on DioException catch (e) {
+      switch (e.response?.statusCode) {
+        case 404:
+          throw Exception(e.message);
+        case 402:
+          throw Exception(e.message);
+        case 500:
+          throw Exception(e.message);
+        default:
+          throw Exception(
+            e.response?.data['message'] ?? "Terjadi kesalahan",
+          );
+      }
+    }
   }
 }

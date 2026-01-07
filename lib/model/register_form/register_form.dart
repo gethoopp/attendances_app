@@ -1,52 +1,41 @@
 import '../basemodels.dart';
 
 class RegisterFormData extends BaseModel {
-  final int? rfid;
   final String? firstName;
   final String? lastnName;
   final String? departement;
-
   final String? email;
   final String? password;
-  final bool securePassword;
+  final int? rfid;
 
-  RegisterFormData(
-      {this.rfid,
-      this.firstName,
-      this.lastnName,
-      this.departement,
-      this.email,
-      this.password,
-      this.securePassword = true});
+  RegisterFormData({
+    this.firstName,
+    this.lastnName,
+    this.departement,
+    this.email,
+    this.password,
+    this.rfid,
+  });
 
   @override
-  copyWith(
-      {int? rfid,
-      String? firstName,
-      String? lastName,
-      String? departement,
-      String? email,
-      String? password,
-      bool? securePassword}) {
+  copyWith({
+    String? firstName,
+    String? lastName,
+    String? departement,
+    String? email,
+    String? password,
+    int? rfid,
+  }) {
     return RegisterFormData(
-      rfid: rfid ?? rfid,
-      firstName: firstName ?? firstName,
-      lastnName: lastName ?? lastName,
-      departement: departement ?? departement,
-      email: email ?? email,
-      password: password ?? this.password,
-      securePassword: securePassword ?? this.securePassword,
-    );
+        firstName: firstName ?? this.firstName,
+        lastnName: lastName ?? this.lastnName,
+        departement: departement ?? this.departement,
+        email: email ?? this.email,
+        password: password ?? this.password,
+        rfid: rfid ?? this.rfid);
   }
 
   @override
-  List<Object?> get props => [
-        rfid,
-        firstName,
-        lastnName,
-        departement,
-        email,
-        password,
-        securePassword
-      ];
+  List<Object?> get props =>
+      [firstName, lastnName, departement, email, password, rfid];
 }

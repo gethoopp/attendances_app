@@ -1,5 +1,6 @@
 import 'package:attendance_app/bloc/register/register_user_data/auth_user_cubit.dart';
 import 'package:attendance_app/component/routes.dart';
+import 'package:attendance_app/component/widget_mixin.dart';
 import 'package:attendance_app/core/websocket_controller/websocket_controller.dart';
 import 'package:attendance_app/extension/string_validate.dart';
 import 'package:attendance_app/model/form_field/form_field.dart';
@@ -21,32 +22,14 @@ class RegisterScreenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BaseUserRepository userRepository = GetUserData();
-    return RepositoryProvider.value(
-      value: userRepository,
-      child: MultiBlocProvider(providers: [
-        BlocProvider(
-          create: (context) => RegisterFormCubit(),
-        ),
-        BlocProvider(create: (context) => AuthUserCubit(userRepository))
-      ], child: RegisterScreen()),
-    );
-  }
-}
-
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final BaseUserRepository userRepository = GetUserData();
-    return RepositoryProvider.value(
-      value: userRepository,
-      child: BlocProvider(
-        create: (context) => AuthUserCubit(userRepository)..registerUser,
-        child: _RegisterScreenContent(),
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+          create: (context) =>
+              AuthUserCubit(context.read<BaseUserRepository>())),
+      BlocProvider(
+        create: (context) => RegisterFormCubit(),
       ),
-    );
+    ], child: _RegisterScreenContent());
   }
 }
 
@@ -55,7 +38,8 @@ class _RegisterScreenContent extends StatefulWidget {
   State<_RegisterScreenContent> createState() => _RegisterScreenContentState();
 }
 
-class _RegisterScreenContentState extends State<_RegisterScreenContent> {
+class _RegisterScreenContentState extends State<_RegisterScreenContent>
+    with WidgetMixin {
   final webSocketController = WebsocketController();
   @override
   void initState() {
@@ -71,7 +55,6 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent> {
 
   @override
   Widget build(BuildContext context) {
-    // context.read<RegisterUserCubit>().registerUser;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -116,235 +99,225 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent> {
                   )
                 ],
               ),
-              BlocListener<AuthUserCubit, AuthUserState>(
-                listener: (context, state) {
-                  if (state is AuthUserSucces) {
-                    AwesomeDialog(
-                            context: context,
-                            title: 'Success',
-                            desc: state.data,
-                            dialogType: DialogType.success)
-                        .show();
-                  } else if (state is AuthUserErr) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.message),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                },
-                child: Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: size.height * 0.04),
-                          child: Column(
-                            children: [
-                              buttonLogin(size,
-                                  text: 'First Name',
-                                  label: 'First Name',
-                                  hint: 'Masukkan nama pertamamu',
-                                  obs: false, onChanged: (value) {
-                                context
-                                    .read<RegisterFormCubit>()
-                                    .onChangeUsername(statelogin.data!, value);
-                                return null;
-                              }),
-                              ErrorTextFormField(
-                                error: statelogin.data!.firstName
-                                    .validateFirstName(5, 20),
-                              ),
-                              const SizedBox(height: 20),
-                              buttonLogin(size,
-                                  text: 'Last Name',
-                                  label: 'Last Name',
-                                  hint: 'Masukkan nama terakhirmu',
-                                  obs: false, onChanged: (value) {
-                                context
-                                    .read<RegisterFormCubit>()
-                                    .onChangeUsername(statelogin.data!, value);
-                                return null;
-                              }),
-                              ErrorTextFormField(
-                                error: statelogin.data!.lastnName
-                                    .validateLastName(5, 20),
-                              ),
-                              const SizedBox(height: 20),
-                              buttonLogin(size,
-                                  text: 'Departement',
-                                  obs: false,
-                                  hint: 'Masukkan depatemenmu',
-                                  label: 'Departement', onChanged: (value) {
-                                context
-                                    .read<RegisterFormCubit>()
-                                    .onChangeDepartement(
-                                        statelogin.data!, value);
-                                return null;
-                              }),
-                              ErrorTextFormField(
-                                error: statelogin
-                                    .data!.departement.validateDepartement,
-                              ),
-                              const SizedBox(height: 20),
-                              buttonLogin(size,
-                                  text: 'Email',
-                                  label: 'Email',
-                                  hint: 'Masukkan email kamu',
-                                  obs: false, onChanged: (value) {
-                                context
-                                    .read<RegisterFormCubit>()
-                                    .onChangeEmail(statelogin.data!, value);
-                                return null;
-                              }),
-                              ErrorTextFormField(
-                                error: statelogin.data!.email.validateEmail,
-                              ),
-                              const SizedBox(height: 20),
-                              buttonLogin(size,
-                                  text: 'Password',
-                                  label: 'Password',
-                                  hint: 'Masukkan Password',
-                                  obs: true, onChanged: (value) {
-                                context
-                                    .read<RegisterFormCubit>()
-                                    .onChangePassword(statelogin.data!, value);
-                                return null;
-                              }),
-                              ErrorTextFormField(
-                                error:
-                                    statelogin.data!.password.validatePassword,
-                              ),
-                              const SizedBox(height: 20),
-                              buttonLogin(size,
-                                  text: 'Rfid Number',
-                                  obs: false,
-                                  hint: 'Masukkan nomor RFID mu',
-                                  label: 'RFID',
-                                  textInput: TextInputType.number,
-                                  onChanged: (value) {
-                                context
-                                    .read<RegisterFormCubit>()
-                                    .onChangeRfid(statelogin.data!, value);
-                                return null;
-                              }),
-                              ErrorTextFormField(
-                                  error: statelogin.data!.rfid
-                                      .toString()
-                                      .validateRfid),
-                              const SizedBox(height: 10),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        right: size.width * 0.08,
-                                      ),
-                                      child: Text(
-                                        'Forgot Password ?',
-                                        style: GoogleFonts.outfit(
-                                            color: Colors.blue),
-                                      ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.04),
+                        child: Column(
+                          children: [
+                            buttonLogin(size,
+                                text: 'First Name',
+                                label: 'First Name',
+                                hint: 'Masukkan nama pertamamu',
+                                obs: false, onChanged: (value) {
+                              context
+                                  .read<RegisterFormCubit>()
+                                  .onChangeFirstName(statelogin.data!, value);
+                            }),
+                            ErrorTextFormField(
+                              error: statelogin.data!.firstName
+                                  .validateFirstName(5, 20),
+                            ),
+                            const SizedBox(height: 20),
+                            buttonLogin(size,
+                                text: 'Last Name',
+                                label: 'Last Name',
+                                hint: 'Masukkan nama terakhirmu',
+                                obs: false, onChanged: (value) {
+                              context
+                                  .read<RegisterFormCubit>()
+                                  .onChangeLastName(statelogin.data!, value);
+                            }),
+                            ErrorTextFormField(
+                              error: statelogin.data!.lastnName
+                                  .validateLastName(5, 20),
+                            ),
+                            const SizedBox(height: 20),
+                            buttonLogin(size,
+                                text: 'Departement',
+                                obs: false,
+                                hint: 'Masukkan departemenmu',
+                                label: 'Departement', onChanged: (value) {
+                              context
+                                  .read<RegisterFormCubit>()
+                                  .onChangeDepartement(statelogin.data!, value);
+                            }),
+                            ErrorTextFormField(
+                              error: statelogin
+                                  .data!.departement.validateDepartement,
+                            ),
+                            const SizedBox(height: 20),
+                            buttonLogin(size,
+                                text: 'Email',
+                                label: 'Email',
+                                hint: 'Masukkan email kamu',
+                                obs: false, onChanged: (value) {
+                              context
+                                  .read<RegisterFormCubit>()
+                                  .onChangeEmail(statelogin.data!, value);
+                            }),
+                            ErrorTextFormField(
+                              error: statelogin.data!.email.validateEmail,
+                            ),
+                            const SizedBox(height: 20),
+                            buttonLogin(size,
+                                text: 'Password',
+                                label: 'Password',
+                                hint: 'Masukkan Password',
+                                obs: true, onChanged: (value) {
+                              context
+                                  .read<RegisterFormCubit>()
+                                  .onChangePassword(statelogin.data!, value);
+                            }),
+                            ErrorTextFormField(
+                              error: statelogin.data!.password.validatePassword,
+                            ),
+                            // StreamBuilder<Map<String, dynamic>>(
+                            //     stream: webSocketController.stream,
+                            //     builder: (context, data) {
+                            //       String rfidValue = data.hasData
+                            //           ? data.data!['rfid_tag'].toString()
+                            //           : '';
+
+                            //       return buttonInputRfid(
+                            //         size,
+                            //         text: 'Rfid Number',
+                            //         obs: false,
+                            //         hint: 'Masukkan nomor RFID mu',
+                            //         label: 'RFID',
+                            //         textInput: TextInputType.number,
+                            //         initialValue: rfidValue,
+                            //       );
+                            //     }),
+                            const SizedBox(height: 20),
+                            buttonInputRfid(
+                              size,
+                              text: "Rfid Number",
+                              obs: false,
+                              label: "Rfid",
+                              hint: "Masukkan nomor Rfid mu",
+                              onChanged: (value) {
+                                context.read<RegisterFormCubit>().onChangeRfid(
+                                    statelogin.data!, int.parse(value));
+                              },
+                            ),
+                            ErrorTextFormField(
+                              error:
+                                  statelogin.data!.rfid.toString().validateRfid,
+                            ),
+
+                            const SizedBox(height: 10),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: size.width * 0.08,
                                     ),
+                                    child: Text(
+                                      'Forgot Password ?',
+                                      style: GoogleFonts.outfit(
+                                          color: Colors.blue),
+                                    ),
+                                  ),
+                                ]),
+                            const SizedBox(height: 15),
+                            BlocConsumer<AuthUserCubit, AuthUserState>(
+                              listener: (context, state) {
+                                if (state is AuthUserSucces) {
+                                  Navigator.pushNamed(context, Routes.login);
+                                }
+
+                                if (state is AuthUserErr) {
+                                  showMyDialog(state.message);
+                                }
+                              },
+                              builder: (context, state) {
+                                return BlocSelector<
+                                    RegisterFormCubit,
+                                    RegisterFormState<RegisterFormData>,
+                                    FormFieldData>(
+                                  selector: (statedata) =>
+                                      FormFieldData(validate: [
+                                    statedata.data!.firstName,
+                                    statedata.data!.lastnName,
+                                    statedata.data!.departement,
+                                    statedata.data!.email,
+                                    statedata.data!.password,
+                                  ], validateForm: [
+                                    statedata.data!.firstName
+                                        .validateFirstName(5, 20),
+                                    statedata.data!.lastnName
+                                        .validateLastName(5, 20),
+                                    statedata
+                                        .data!.departement.validateDepartement,
+                                    statedata.data!.email.validateEmail,
+                                    statedata.data!.password.validatePassword,
                                   ]),
-                              const SizedBox(height: 25),
-                              BlocConsumer<AuthUserCubit, AuthUserState>(
-                                listener: (context, state) {
-                                  if (AuthUserState is AuthUserSucces) {
-                                    Navigator.pushNamed(
-                                        context, Routes.dashboard);
-                                  }
-                                },
-                                builder: (context, state) {
-                                  return BlocSelector<
-                                      RegisterFormCubit,
-                                      RegisterFormState<RegisterFormData>,
-                                      FormFieldData>(
-                                    selector: (state) =>
-                                        FormFieldData(validate: [
-                                      statelogin.data!.firstName,
-                                      statelogin.data!.lastnName,
-                                      statelogin.data!.departement,
-                                      statelogin.data!.email,
-                                      statelogin.data!.password,
-                                      statelogin.data!.rfid
-                                    ], validateForm: [
-                                      statelogin.data!.firstName
-                                          .validateFirstName(2, 8),
-                                      statelogin.data!.lastnName
-                                          .validateLastName(2, 8),
-                                      statelogin.data!.departement
-                                          .validateDepartement,
-                                      statelogin.data!.email.validateEmail,
-                                      statelogin
-                                          .data!.password.validatePassword,
-                                      statelogin.data!.rfid
-                                    ]),
-                                    builder: (context, validateState) {
-                                      final isLoading =
-                                          state is AuthUserLoading;
-                                      return buttonLoginTap(
-                                        onTap: () {
-                                          validateState.hasEmptyField ||
-                                                  validateState.hasInvalidField
-                                              ? ""
-                                              : context
-                                                  .read<AuthUserCubit>()
-                                                  .registerUser(
-                                                    context,
-                                                    cardNumber:
-                                                        statelogin.data!.rfid!,
-                                                    firstName: statelogin
-                                                        .data!.firstName!,
-                                                    lastName: statelogin
-                                                        .data!.lastnName!,
-                                                    department: statelogin
-                                                        .data!.departement!,
-                                                    email:
-                                                        statelogin.data!.email!,
-                                                    password: statelogin
-                                                        .data!.password!,
-                                                  );
-                                        },
-                                        size,
-                                        text: isLoading ? "" : "Daftar",
-                                        colorbtn: validateState.hasEmptyField ||
-                                                validateState.hasInvalidField ||
-                                                isLoading
-                                            ? Colors.grey.shade300
-                                            : Colors.blue,
-                                        validateState.hasEmptyField ||
-                                                validateState.hasInvalidField ||
-                                                isLoading
-                                            ? Colors.grey.shade300
-                                            : Colors.blue,
-                                        textColor: validateState
-                                                    .hasEmptyField &&
-                                                validateState.hasInvalidField
-                                            ? Colors.black
-                                            : Colors.white,
-                                        child: isLoading
-                                            ? const SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Colors.blue,
-                                                  strokeWidth: 2,
-                                                ),
-                                              )
-                                            : null,
-                                      );
-                                    },
-                                  );
-                                },
-                              )
-                            ],
-                          ),
+                                  builder: (context, validateState) {
+                                    final isLoading = state is AuthUserLoading;
+                                    debugPrint("ini state $isLoading ");
+                                    return buttonLoginTap(
+                                      onTap: () {
+                                        if (validateState.hasEmptyField ||
+                                            validateState.hasInvalidField ||
+                                            isLoading) {
+                                          return;
+                                        }
+
+                                        context
+                                            .read<AuthUserCubit>()
+                                            .registerUser(
+                                              rfid: statelogin.data!.rfid!,
+                                              firstName:
+                                                  statelogin.data!.firstName!,
+                                              lastName:
+                                                  statelogin.data!.lastnName!,
+                                              department:
+                                                  statelogin.data!.departement!,
+                                              email: statelogin.data!.email!,
+                                              password:
+                                                  statelogin.data!.password!,
+                                            );
+                                      },
+                                      size,
+                                      text: isLoading ? "" : "Daftar",
+                                      colorbtn: validateState.hasEmptyField ||
+                                              validateState.hasInvalidField ||
+                                              isLoading
+                                          ? Colors.grey.shade300
+                                          : Colors.blue,
+                                      validateState.hasEmptyField ||
+                                              validateState.hasInvalidField ||
+                                              isLoading
+                                          ? Colors.grey.shade300
+                                          : Colors.blue,
+                                      textColor: validateState.hasEmptyField ||
+                                              validateState.hasInvalidField ||
+                                              isLoading
+                                          ? Colors.black
+                                          : Colors.white,
+                                      child: isLoading
+                                          ? const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.blue,
+                                                strokeWidth: 2,
+                                              ),
+                                            )
+                                          : null,
+                                    );
+                                  },
+                                );
+                              },
+                            )
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

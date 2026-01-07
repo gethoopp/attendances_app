@@ -1,5 +1,5 @@
 {
-    "dart.flutterSdkPath": "/Volumes/Haliim-SSD/.puro/envs/app_projects/flutter",
+    "dart.flutterSdkPath": "/Volumes/Haliim-SSD/.puro/envs/3.32.0/flutter",
     "cmake.sourceDirectory": "/home/thisisslazar/Documents/project/attendances_app/linux",
-    "dart.sdkPath": "/Volumes/Haliim-SSD/.puro/envs/app_projects/flutter/bin/cache/dart-sdk"
+    "dart.sdkPath": "/Volumes/Haliim-SSD/.puro/envs/3.32.0/flutter/bin/cache/dart-sdk"
 }

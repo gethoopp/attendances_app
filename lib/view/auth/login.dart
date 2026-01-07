@@ -1,7 +1,11 @@
 import 'package:attendance_app/bloc/login_form/login_form_cubit.dart';
+import 'package:attendance_app/bloc/register/register_user_data/auth_user_cubit.dart';
+import 'package:attendance_app/component/screen_argument.dart';
+import 'package:attendance_app/component/widget_mixin.dart';
 import 'package:attendance_app/extension/string_validate.dart';
+import 'package:attendance_app/model/form_field/form_field.dart';
 import 'package:attendance_app/model/login_form/login_form.dart';
-import 'package:attendance_app/view/auth/register.dart';
+import 'package:attendance_app/repository/users/base_user.dart';
 import 'package:attendance_app/widget/button.dart';
 import 'package:attendance_app/widget/errorText.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +14,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../component/routes.dart';
-import '../homepage/dashborad_screen.dart';
 
 class LoginPageScreen extends StatelessWidget {
   const LoginPageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [BlocProvider(create: (context) => LoginFormCubit())],
-        child: LoginPage());
+    return MultiBlocProvider(providers: [
+      BlocProvider(create: (context) => LoginFormCubit()),
+      BlocProvider(
+          create: (context) =>
+              AuthUserCubit(context.read<BaseUserRepository>()))
+    ], child: LoginPage());
   }
 }
 
@@ -30,17 +36,15 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => LoginPageState();
 }
 
-class LoginPageState extends State<LoginPage> {
-  TextEditingController emailContoller = TextEditingController();
-  TextEditingController passContoller = TextEditingController();
+class LoginPageState extends State<LoginPage> with WidgetMixin {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlocBuilder<LoginFormCubit, LoginFormState<LoginFormData>>(
-        builder: (context, state) {
-          if (state.data == null) {
+        builder: (context, stateData) {
+          if (stateData.data == null) {
             return const Center(child: CircularProgressIndicator());
           }
           return SingleChildScrollView(
@@ -105,10 +109,10 @@ class LoginPageState extends State<LoginPage> {
                           obs: false, onChanged: (value) {
                         context
                             .read<LoginFormCubit>()
-                            .onChangeUsername(state.data!, value);
+                            .onChangeUsername(stateData.data!, value);
                       }),
                       ErrorTextFormField(
-                        error: state.data!.email.validateEmail,
+                        error: stateData.data!.email.validateEmail,
                       ),
                       const SizedBox(height: 20),
                       buttonLogin(size,
@@ -118,10 +122,10 @@ class LoginPageState extends State<LoginPage> {
                           obs: true, onChanged: (value) {
                         context
                             .read<LoginFormCubit>()
-                            .onChangePassword(state.data!, value);
+                            .onChangePassword(stateData.data!, value);
                       }),
                       ErrorTextFormField(
-                        error: state.data!.password.validatePassword,
+                        error: stateData.data!.password.validatePassword,
                       ),
                     ],
                   ),
@@ -141,24 +145,75 @@ class LoginPageState extends State<LoginPage> {
                   ),
                 ]),
                 const SizedBox(height: 25),
-                buttonLoginTap(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DashboradScreen())),
-                    size,
-                    text: 'Login',
-                    colorbtn: emailContoller.text.isNotEmpty &&
-                            passContoller.text.isNotEmpty &&
-                            passContoller.text.length >= 5
-                        ? Colors.blue
-                        : Colors.grey,
-                    emailContoller.text.isNotEmpty &&
-                            passContoller.text.isNotEmpty &&
-                            passContoller.text.length >= 5
-                        ? Colors.blue
-                        : Colors.grey,
-                    textColor: Colors.white),
+                BlocConsumer<AuthUserCubit, AuthUserState>(
+                  listener: (context, state) {
+                    if (state is RegisterAuthSucces) {
+                      Navigator.pushNamed(context, Routes.home,
+                          arguments: ScreenArguments(
+                              state.data.result!.idUsers!, state.data.token!));
+                    }
+
+                    if (state is AuthUserErr) {
+                      showMyDialog(state.message);
+                    }
+                  },
+                  builder: (context, state) {
+                    return BlocSelector<LoginFormCubit,
+                        LoginFormState<LoginFormData>, FormFieldData>(
+                      selector: (statedata) => FormFieldData(validate: [
+                        statedata.data!.email,
+                        statedata.data!.password
+                      ], validateForm: [
+                        statedata.data!.email.validateEmail,
+                        statedata.data!.password.validatePassword,
+                      ]),
+                      builder: (context, validateState) {
+                        final isLoading = state is RegisterAuthLoading;
+                        debugPrint("ini state $isLoading ");
+                        return buttonLoginTap(
+                          onTap: () {
+                            if (validateState.hasEmptyField ||
+                                validateState.hasInvalidField ||
+                                isLoading) {
+                              return;
+                            }
+
+                            context.read<AuthUserCubit>().loginUser(
+                                email: stateData.data!.email!,
+                                pass: stateData.data!.password!);
+                          },
+                          size,
+                          text: isLoading ? "" : "Login",
+                          colorbtn: validateState.hasEmptyField ||
+                                  validateState.hasInvalidField ||
+                                  isLoading
+                              ? Colors.grey.shade300
+                              : Colors.blue,
+                          validateState.hasEmptyField ||
+                                  validateState.hasInvalidField ||
+                                  isLoading
+                              ? Colors.grey.shade300
+                              : Colors.blue,
+                          textColor: validateState.hasEmptyField ||
+                                  validateState.hasInvalidField ||
+                                  isLoading
+                              ? Colors.black
+                              : Colors.white,
+                          child: isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.blue,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : null,
+                        );
+                      },
+                    );
+                  },
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: size.height * 0.02),
                   child: Text(
@@ -197,8 +252,6 @@ class LoginPageState extends State<LoginPage> {
                       InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, Routes.register);
-                          emailContoller.clear();
-                          passContoller.clear();
                         },
                         child: Text(
                           'Register',

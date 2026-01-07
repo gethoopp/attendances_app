@@ -1,12 +1,17 @@
+import 'package:attendance_app/consstant/env_config.dart';
+
 class Url {
   //base URL
-  static String baseUrl = 'http://192.168.0.13:8080/';
-  static String baseSocket = 'ws://192.168.0.13:8080/';
+  static String get baseUrl => EnvConfig.baseUrl;
+  static String get baseSocket => EnvConfig.baseSocket;
 
   //URL
   static String registerUrl = 'api/register';
   static String loginUrl = 'api/login';
+  static String getUser = 'api/data';
+  static String sendCheckin = 'api/checkIn';
+  static String sendCheckOut = 'api/checkOut';
 
-  //socker URL
+  //socket URL
   static String socketUrl = 'ws/input';
 }

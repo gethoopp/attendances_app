@@ -8,37 +8,37 @@ class RegisterFormCubit extends Cubit<RegisterFormState<RegisterFormData>> {
   RegisterFormCubit() : super(RegisterFormInitial(RegisterFormData()));
 
   void initialize(RegisterFormData registerFormData) {
-    emit(RegisterFormSuccess(registerFormData));
+    emit(RegisterFormSucces(registerFormData));
   }
 
-  void onChangeUsername(RegisterFormData latestFormData, String username) {
-    latestFormData = latestFormData.copyWith(firstName: username);
-    emit(RegisterFormSuccess(latestFormData));
+  void onChangeFirstName(RegisterFormData latestFormData, String firstName) {
+    latestFormData = latestFormData.copyWith(firstName: firstName);
+    emit(RegisterFormSucces(latestFormData));
+  }
+
+  void onChangeLastName(RegisterFormData latestFormData, String lastName) {
+    latestFormData = latestFormData.copyWith(lastName: lastName);
+    emit(RegisterFormSucces(latestFormData));
   }
 
   void onChangeDepartement(
       RegisterFormData latestFormData, String departement) {
     latestFormData = latestFormData.copyWith(departement: departement);
-    emit(RegisterFormSuccess(latestFormData));
+    emit(RegisterFormSucces(latestFormData));
   }
 
   void onChangeEmail(RegisterFormData latestFormData, String email) {
     latestFormData = latestFormData.copyWith(email: email);
-    emit(RegisterFormSuccess(latestFormData));
+    emit(RegisterFormSucces(latestFormData));
   }
 
   void onChangePassword(RegisterFormData latestFormData, String password) {
     latestFormData = latestFormData.copyWith(password: password);
-    emit(RegisterFormSuccess(latestFormData));
+    emit(RegisterFormSucces(latestFormData));
   }
 
   void onChangeRfid(RegisterFormData latestFormData, int rfid) {
     latestFormData = latestFormData.copyWith(rfid: rfid);
-    emit(RegisterFormSuccess(latestFormData));
-  }
-
-  void onTapShowPassword(RegisterFormData latestFormData, bool isShow) {
-    latestFormData = latestFormData.copyWith(securePassword: !isShow);
-    emit(RegisterFormSuccess(latestFormData));
+    emit(RegisterFormSucces(latestFormData));
   }
 }

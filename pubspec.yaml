@@ -31,13 +31,21 @@ dependencies:
   get_it: ^8.0.3
   equatable: ^2.0.7
   flutter_screenutil: ^5.9.3
+  json_annotation: 
+  lottie: 
+  chucker_flutter: 
+  easy_date_timeline: 
+  slide_to_act: 
+  animated_bottom_navigation_bar: 
 
 dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
+  json_serializable: ^6.11.2
+  build_runner: ^2.4.6
 
-  syncfusion_flutter_datepicker: ^28.1.36
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

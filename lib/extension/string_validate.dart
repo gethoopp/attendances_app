@@ -4,16 +4,12 @@ extension StringValidate on String? {
       return null;
     }
 
-    // if (this!.isEmpty) {
-    //   return "Email tidak boleh kosong";
-    // }
+    if (this!.isEmpty) {
+      return "Email tidak boleh kosong";
+    }
     if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
         .hasMatch(this!)) {
       return "Format email tidak valid";
-    }
-
-    if (this!.length < 6) {
-      return "Masukkan email dengan benar";
     }
 
     return null;
@@ -24,11 +20,11 @@ extension StringValidate on String? {
       return null;
     }
 
-    // if (this!.isEmpty) {
-    //   return "Email tidak boleh kosong";
-    // }
-    if (!RegExp(r'^(Marketing|IT Departement)$').hasMatch(this!)) {
-      return "Departement Tidak Valid";
+    if (this!.isEmpty) {
+      return "Departement tidak boleh kosong";
+    }
+    if (this!.contains(RegExp(r'[@!#\$%^&*(),.?":{}|<>]'))) {
+      return "Departement tidak valid";
     }
 
     if (this!.length < 6) {
@@ -44,9 +40,9 @@ extension StringValidate on String? {
     }
 
     // Uncomment the following lines to check for empty password
-    // if (this!.isEmpty) {
-    //   return "Password tidak boleh kosong";
-    // }
+    if (this!.isEmpty) {
+      return "Password tidak boleh kosong";
+    }
 
     if (this!.length < 5) {
       return "Password harus lebih dari 5 karakter";
@@ -84,6 +80,10 @@ extension StringValidate on String? {
       return "Nama Pengguna Minimal $minLength Karakter";
     }
 
+    if (this!.length < minLength!) {
+      return "Nama Pengguna minimal $minLength Karakter";
+    }
+
     if (this!.length > maxLength!) {
       return "Nama Pengguna Maksimal $maxLength Karakter";
     }
@@ -115,6 +115,10 @@ extension StringValidate on String? {
 
     if (this!.isEmpty) {
       return "Nama Pengguna Minimal $minLength Karakter";
+    }
+
+    if (this!.length < minLength!) {
+      return "Nama Pengguna minimal $minLength Karakter";
     }
 
     if (this!.length > maxLength!) {
