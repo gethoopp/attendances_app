@@ -1,12 +1,10 @@
 import 'package:attendance_app/component/routes.dart';
-<<<<<<< HEAD
 import 'package:attendance_app/core/amqp_conn.dart';
 import 'package:attendance_app/view/auth/login.dart';
 import 'package:attendance_app/view/auth/register.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-=======
 import 'package:attendance_app/core/amqp_conn/amqp_conn.dart';
 import 'package:attendance_app/repository/presence/presence.dart';
 import 'package:attendance_app/repository/users/base_user.dart';
@@ -21,51 +19,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
->>>>>>> master
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Firebase.initializeApp();
-<<<<<<< HEAD
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   AmqpConn().initService;
   AmqpConn().listenMessage;
   runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-          statusBarBrightness: Brightness.dark,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark),
-      child: MaterialApp(
-        initialRoute: Routes.login,
-        routes: {
-          Routes.login: (context) => LoginPage(),
-          Routes.register: (context) => RegisterScreen(),
-        },
-        debugShowCheckedModeBanner: false,
-        home: LoginPage(),
-      ),
-=======
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-// );
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  AmqpConn().initService;
-  AmqpConn().listenMessage;
-  final BaseUserRepository userRepository = GetUserData();
-  final BasePresence basePresence = CheckInRepository();
-  runApp(MyApp(
-    userRepository: userRepository,
-    basePresence: basePresence,
-  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -107,13 +68,10 @@ class MyApp extends StatelessWidget {
               );
             },
           )),
->>>>>>> master
     );
   }
 }
 
-<<<<<<< HEAD
+
+
 //this project use flutter version 3.24.0 USE PURO OR FVM
-=======
-//this project use flutter version 3.24.0 USE PURO OR FVM
->>>>>>> master
