@@ -1,11 +1,5 @@
 {
-<<<<<<< HEAD
-    "dart.flutterSdkPath": "/home/thisisslazar/.puro/envs/attend/flutter",
-    "cmake.sourceDirectory": "/home/thisisslazar/Documents/project/attendances_app/linux",
-    "dart.sdkPath": "/home/thisisslazar/.puro/envs/attend/flutter/bin/cache/dart-sdk"
-=======
     "dart.flutterSdkPath": "/Volumes/Haliim-SSD/.puro/envs/3.32.0/flutter",
     "cmake.sourceDirectory": "/home/thisisslazar/Documents/project/attendances_app/linux",
     "dart.sdkPath": "/Volumes/Haliim-SSD/.puro/envs/3.32.0/flutter/bin/cache/dart-sdk"
->>>>>>> master
 }

@@ -1,29 +1,29 @@
 import 'package:equatable/equatable.dart';
 
-sealed class PresenceState<T> extends Equatable {
+sealed class DataState<T> extends Equatable {
   final T? data;
   final String? message;
 
-  const PresenceState({this.data, this.message});
+  const DataState({this.data, this.message});
 
   @override
   List<Object?> get props => [data, message];
 }
 
-final class PresenceInitial<T> extends PresenceState<T> {
-  const PresenceInitial();
+final class DataInitial<T> extends DataState<T> {
+  const DataInitial();
 }
 
-final class PresenceLoading<T> extends PresenceState<T> {
-  const PresenceLoading({T? data}) : super(data: data);
+final class DataLoading<T> extends DataState<T> {
+  const DataLoading({T? data}) : super(data: data);
 }
 
-final class PresenceSuccess<T> extends PresenceState<T> {
-  const PresenceSuccess(T data, {String? message})
+final class DataSucces<T> extends DataState<T> {
+  const DataSucces(T data, {String? message})
       : super(data: data, message: message);
 }
 
-final class PresenceError<T> extends PresenceState<T> {
-  const PresenceError(String message, {T? data})
+final class DataError<T> extends DataState<T> {
+  const DataError(String message, {T? data})
       : super(message: message, data: data);
 }

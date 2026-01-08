@@ -184,14 +184,14 @@ class _HomeScreenPageState extends State<HomeScreenPage> with WidgetMixin {
                       ),
                     ],
                   ),
-                  BlocConsumer<PresenceCubit, PresenceState>(
+                  BlocConsumer<PresenceCubit, DataState>(
                     listener: (context, state) {
-                      if (state is PresenceSuccess) {
+                      if (state is DataSucces) {
                         showMyDialog(state.message!);
                       }
                     },
                     builder: (context, state) {
-                      final isSucces = state is PresenceSuccess;
+                      final isSucces = state is DataSucces;
                       return Padding(
                         padding: const EdgeInsets.all(30.0),
                         child: SlideAction(

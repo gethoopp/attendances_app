@@ -30,11 +30,7 @@ class _DashboradScreenState extends State<DashboradScreen> {
                     debugPrint('hasil gambar dari pick image: $imageResult');
                   },
                   child: Text('Input Image'))),
-<<<<<<< HEAD
-          Container(
-=======
           SizedBox(
->>>>>>> master
             width: size.width * 0.5,
             height: size.height * 0.5,
             child: imageResult != null
@@ -86,12 +82,7 @@ class _DashboradScreenState extends State<DashboradScreen> {
 
     var stream = http.ByteStream(Stream.castFrom(imageResult!.openRead()));
     var length = await imageResult!.length();
-<<<<<<< HEAD
-   final uri = Uri.parse("http://192.168.1.57:8080/api/upload");
-
-=======
     final uri = Uri.parse("http://192.168.1.57:8080/api/upload");
->>>>>>> master
 
     var request = http.MultipartRequest("POST", uri);
     request.files.add(http.MultipartFile("image", stream, length,

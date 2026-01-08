@@ -1,10 +1,4 @@
 import 'package:attendance_app/component/routes.dart';
-import 'package:attendance_app/core/amqp_conn.dart';
-import 'package:attendance_app/view/auth/login.dart';
-import 'package:attendance_app/view/auth/register.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:attendance_app/core/amqp_conn/amqp_conn.dart';
 import 'package:attendance_app/repository/presence/presence.dart';
 import 'package:attendance_app/repository/users/base_user.dart';
@@ -23,10 +17,18 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Firebase.initializeApp();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+// );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   AmqpConn().initService;
   AmqpConn().listenMessage;
-  runApp(const MyApp());
+  final BaseUserRepository userRepository = GetUserData();
+  final BasePresence basePresence = CheckInRepository();
+  runApp(MyApp(
+    userRepository: userRepository,
+    basePresence: basePresence,
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -71,7 +73,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
 
 //this project use flutter version 3.24.0 USE PURO OR FVM

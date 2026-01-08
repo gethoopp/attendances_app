@@ -7,18 +7,6 @@ extension StringValidate on String? {
     if (this!.isEmpty) {
       return "Email tidak boleh kosong";
     }
-<<<<<<< HEAD
-
-    if (this!.length < 6) {
-      return "Masukkan email dengan benar";
-    }
-
-
-
-    return null;
-  }
-
-=======
     if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
         .hasMatch(this!)) {
       return "Format email tidak valid";
@@ -45,17 +33,13 @@ extension StringValidate on String? {
 
     return null;
   }
->>>>>>> master
 
   String? get validatePassword {
     if (this == null) {
       return null;
     }
 
-<<<<<<< HEAD
-=======
     // Uncomment the following lines to check for empty password
->>>>>>> master
     if (this!.isEmpty) {
       return "Password tidak boleh kosong";
     }
@@ -67,10 +51,6 @@ extension StringValidate on String? {
     return null;
   }
 
-<<<<<<< HEAD
-
-  String? get validateConfirmPassword {
-=======
   String? get validateRfid {
     if (this == null) {
       return null;
@@ -92,25 +72,11 @@ extension StringValidate on String? {
   }
 
   String? validateFirstName(int? minLength, int? maxLength) {
->>>>>>> master
     if (this == null) {
       return null;
     }
 
     if (this!.isEmpty) {
-<<<<<<< HEAD
-      return "Password tidak boleh kosong";
-    }
-
-    if (this!.length != validatePassword!.length) {
-      return "Password tidak sama";
-      
-    }
-
-     if (this != validatePassword) {
-      return "Password tidak sama";
-      
-=======
       return "Nama Pengguna Minimal $minLength Karakter";
     }
 
@@ -174,7 +140,6 @@ extension StringValidate on String? {
     }
     if (this!.contains(RegExp(r'^[!@#\$%^&*(),.?":{}|<>]'))) {
       return "Nama Pengguna tidak boleh diawali dengan simbol";
->>>>>>> master
     }
 
     return null;
