@@ -15,15 +15,13 @@ final class DataInitial<T> extends DataState<T> {
 }
 
 final class DataLoading<T> extends DataState<T> {
-  const DataLoading({T? data}) : super(data: data);
+  const DataLoading({super.data});
 }
 
 final class DataSucces<T> extends DataState<T> {
-  const DataSucces(T data, {String? message})
-      : super(data: data, message: message);
+  const DataSucces(T data, {super.message}) : super(data: data);
 }
 
 final class DataError<T> extends DataState<T> {
-  const DataError(String message, {T? data})
-      : super(message: message, data: data);
+  const DataError(String message, {super.data}) : super(message: message);
 }

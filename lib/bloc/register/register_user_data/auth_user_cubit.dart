@@ -22,7 +22,13 @@ class AuthUserCubit extends Cubit<AuthUserState> {
     emit(AuthUserLoading());
     try {
       final result = await userRepository.registerUserData(
-          rfid, firstName, lastName, department, email, password);
+        rfid,
+        firstName,
+        lastName,
+        department,
+        email,
+        password,
+      );
       emit(AuthUserSucces(result));
     } catch (e) {
       emit(AuthUserErr(e.toString().replaceFirst('Exception: ', '')));
@@ -30,25 +36,23 @@ class AuthUserCubit extends Cubit<AuthUserState> {
   }
 
   //Cubit untuk Login user
-
-  void loginUser({
-    required String email,
-    required String pass,
-  }) async {
+  void loginUser({required String email, required String pass}) async {
     emit(RegisterAuthLoading());
-    try {
-      final result = await userRepository.loginUser(email, pass);
-      emit(RegisterAuthSucces(result));
-    } catch (e) {
-      emit(AuthUserErr(e.toString().replaceFirst('Exception: ', '')));
-    }
+    final result = await userRepository.loginUser(email, pass);
+    return result.fold(
+      ifRight: (value) => emit(RegisterAuthSucces(value)),
+      ifLeft: (value) =>
+          emit(AuthUserErr(value.toString().replaceFirst('Exception: ', ''))),
+    );
   }
 
   Future<void> getUser(int id, String token) async {
     emit(RegisterAuthLoading());
     try {
-      final user =
-          await userRepository.getUserData(id, token); // dari API / local
+      final user = await userRepository.getUserData(
+        id,
+        token,
+      ); // dari API / local
       emit(RegisterAuthSucces(user));
     } catch (e) {
       emit(AuthUserErr(toString().replaceFirst('Exception: ', '')));

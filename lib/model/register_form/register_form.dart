@@ -27,15 +27,22 @@ class RegisterFormData extends BaseModel {
     int? rfid,
   }) {
     return RegisterFormData(
-        firstName: firstName ?? this.firstName,
-        lastnName: lastName ?? this.lastnName,
-        departement: departement ?? this.departement,
-        email: email ?? this.email,
-        password: password ?? this.password,
-        rfid: rfid ?? this.rfid);
+      firstName: firstName ?? this.firstName,
+      lastnName: lastName ?? lastnName,
+      departement: departement ?? this.departement,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      rfid: rfid ?? this.rfid,
+    );
   }
 
   @override
-  List<Object?> get props =>
-      [firstName, lastnName, departement, email, password, rfid];
+  List<Object?> get props => [
+    firstName,
+    lastnName,
+    departement,
+    email,
+    password,
+    rfid,
+  ];
 }

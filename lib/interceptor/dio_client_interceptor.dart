@@ -9,7 +9,7 @@ class DioClientInterceptor {
     final dio = Dio(
       BaseOptions(
         baseUrl: Url.baseUrl,
-        sendTimeout: Duration(seconds: 2),
+        sendTimeout: Duration(milliseconds: 300),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

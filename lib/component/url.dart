@@ -9,6 +9,7 @@ class Url {
   static String registerUrl = 'api/register';
   static String loginUrl = 'api/login';
   static String getUser = 'api/data';
+  static String getUserPresence = 'api/presence';
   static String sendCheckin = 'api/checkIn';
   static String sendCheckOut = 'api/checkOut';
 

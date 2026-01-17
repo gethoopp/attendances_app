@@ -4,7 +4,7 @@ class EnvConfig {
     'BASE_URL',
 
     /*Dev*/
-    defaultValue: 'http://192.168.0.4:8080/',
+    defaultValue: 'http://backend.attendance:85/',
 
     /*Prod*/
     // defaultValue: 'https://go-attendance-app-f1a53d9d812c.herokuapp.com/',
@@ -14,7 +14,7 @@ class EnvConfig {
   static const baseSocket = String.fromEnvironment(
     'BASE_SOCKET',
     /*Dev*/
-    defaultValue: 'ws://192.168.0.4:8080/',
+    defaultValue: 'ws://backen.attendance:85/',
     /*Production*/
     // defaultValue:  'wss://go-attendance-app-f1a53d9d812c.herokuapp.com/';
   );

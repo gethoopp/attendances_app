@@ -2,6 +2,7 @@ import 'package:attendance_app/component/url.dart';
 import 'package:attendance_app/interceptor/dio_client_interceptor.dart';
 import 'package:attendance_app/model/users_data/user.dart';
 import 'package:attendance_app/repository/users/users.dart';
+import 'package:dart_either/dart_either.dart';
 import 'package:dio/dio.dart';
 
 class GetUserData implements BaseUserRepository {
@@ -28,9 +29,7 @@ class GetUserData implements BaseUserRepository {
         case 409:
           throw Exception(e.response?.data['message']);
         default:
-          throw Exception(
-            e.response?.data['message'] ?? "Terjadi kesalahan",
-          );
+          throw Exception(e.response?.data['message'] ?? "Terjadi kesalahan");
       }
     }
   }
@@ -41,8 +40,14 @@ class GetUserData implements BaseUserRepository {
   }
 
   @override
-  Future<String> registerUserData(int cardNumber, String firstName,
-      String lastName, String departement, String email, String pass) async {
+  Future<String> registerUserData(
+    int cardNumber,
+    String firstName,
+    String lastName,
+    String departement,
+    String email,
+    String pass,
+  ) async {
     try {
       var result = await dio.post(
         Url.registerUrl,
@@ -52,7 +57,7 @@ class GetUserData implements BaseUserRepository {
           "id_last_name": lastName,
           "id_departement": departement,
           "email_user": email,
-          "password_user": pass
+          "password_user": pass,
         },
       );
 
@@ -68,36 +73,31 @@ class GetUserData implements BaseUserRepository {
         case 409:
           throw Exception(e.response?.data['message']);
         default:
-          throw Exception(
-            e.response?.data['message'] ?? "Terjadi kesalahan",
-          );
+          throw Exception(e.response?.data['message'] ?? "Terjadi kesalahan");
       }
     }
   }
 
   @override
-  Future<User> loginUser(String email, String pass) async {
+  Future<Either<String, User>> loginUser(String email, String pass) async {
     try {
       var response = await dio.post(
         Url.loginUrl,
-        data: {
-          "email_user": email,
-          "password_user": pass,
-        },
+        data: {"email_user": email, "password_user": pass},
       );
 
-      return User.fromJson(response.data);
+      return Right<String, User>(User.fromJson(response.data));
     } on DioException catch (e) {
       switch (e.response?.statusCode) {
         case 404:
-          throw Exception(e.message);
+          return Left<String, User>(e.response?.data['message']);
         case 402:
-          throw Exception(e.message);
+          return Left<String, User>(e.response?.data['message']);
         case 500:
-          throw Exception(e.message);
+          return Left<String, User>(e.response?.data['message']);
         default:
-          throw Exception(
-            e.response?.data['message'] ?? "Terjadi kesalahan",
+          return Left<String, User>(
+            e.response?.data['message'] ?? "Terjadi Kesalahan",
           );
       }
     }
