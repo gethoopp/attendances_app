@@ -7,13 +7,14 @@ class WebsocketController {
   late WebSocketChannel webSocketChannel;
 
   void connectSocket() async {
-    webSocketChannel =
-        WebSocketChannel.connect(Uri.parse(Url.baseSocket + Url.socketUrl));
+    webSocketChannel = WebSocketChannel.connect(
+      Uri.parse(Url.baseSocket + Url.socketUrl),
+    );
     await webSocketChannel.ready;
   }
 
   Stream<Map<String, dynamic>> get stream =>
-      webSocketChannel.stream.map((event) => jsonDecode(event));
+      webSocketChannel.stream.map((jsonData) => jsonDecode(jsonData));
 
   void close() {
     webSocketChannel.sink.close();

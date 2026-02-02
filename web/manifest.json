@@ -1,11 +1,6 @@
 {
-<<<<<<< HEAD
-    "name": "attendances_app",
-    "short_name": "attendances_app",
-=======
     "name": "staffsyncs",
     "short_name": "staffsyncs",
->>>>>>> master
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

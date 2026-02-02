@@ -1,119 +1,111 @@
+import 'package:attendance_app/bloc/them_data/theme_data_cubit.dart';
 import 'package:attendance_app/component/routes.dart';
-<<<<<<< HEAD
-import 'package:attendance_app/core/amqp_conn.dart';
-import 'package:attendance_app/view/auth/login.dart';
-import 'package:attendance_app/view/auth/register.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-=======
 import 'package:attendance_app/core/amqp_conn/amqp_conn.dart';
+import 'package:attendance_app/extension/app_router.dart';
+import 'package:attendance_app/repository/locate_user/locate_repo.dart';
 import 'package:attendance_app/repository/presence/presence.dart';
+import 'package:attendance_app/repository/total_worker/total_worker.dart';
 import 'package:attendance_app/repository/users/base_user.dart';
 import 'package:attendance_app/repository/users/user.dart';
 import 'package:attendance_app/view/auth/login.dart';
 import 'package:attendance_app/view/auth/register.dart';
-import 'package:attendance_app/view/homepage/home_screen.dart';
+import 'package:attendance_app/view/Home/dashboard/home_screen.dart';
+import 'package:attendance_app/widget/bottom_navigation.dart';
 import 'package:chucker_flutter/chucker_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
->>>>>>> master
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Firebase.initializeApp();
-<<<<<<< HEAD
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  // );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  AmqpConn().initService;
-  AmqpConn().listenMessage;
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-          statusBarBrightness: Brightness.dark,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark),
-      child: MaterialApp(
-        initialRoute: Routes.login,
-        routes: {
-          Routes.login: (context) => LoginPage(),
-          Routes.register: (context) => RegisterScreen(),
-        },
-        debugShowCheckedModeBanner: false,
-        home: LoginPage(),
-      ),
-=======
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-// );
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  AmqpConn().initService;
-  AmqpConn().listenMessage;
+  final amqPcon = AmqpConn();
+  amqPcon.initService;
+  // amqPcon.listenMessage(onmessage)
   final BaseUserRepository userRepository = GetUserData();
   final BasePresence basePresence = CheckInRepository();
-  runApp(MyApp(
-    userRepository: userRepository,
-    basePresence: basePresence,
-  ));
+  final BasetotalDataworker basetotalDataworker = BaseTotalWorker();
+  LocateUser().getPermisionLocation();
+
+  runApp(
+    MyApp(
+      userRepository: userRepository,
+      basePresence: basePresence,
+      basetotalDataworker: basetotalDataworker,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   final BaseUserRepository userRepository;
   final BasePresence basePresence;
-  const MyApp(
-      {super.key, required this.userRepository, required this.basePresence});
+  final BasetotalDataworker basetotalDataworker;
+  const MyApp({
+    super.key,
+    required this.userRepository,
+    required this.basePresence,
+    required this.basetotalDataworker,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final _appRouter = AppRouter();
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<BaseUserRepository>.value(
-          value: userRepository,
+        RepositoryProvider<BaseUserRepository>.value(value: userRepository),
+        RepositoryProvider<BasePresence>.value(value: basePresence),
+        RepositoryProvider<BasetotalDataworker>.value(
+          value: basetotalDataworker,
         ),
-        RepositoryProvider<BasePresence>.value(
-          value: basePresence,
-        )
       ],
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
+      child: BlocProvider(
+        create: (context) => ThemeDataCubit(),
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle(
-              statusBarBrightness: Brightness.dark,
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: Brightness.dark),
+            statusBarBrightness: Brightness.dark,
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+          ),
           child: ScreenUtilInit(
             designSize: const Size(393, 852),
             minTextAdapt: true,
             builder: (context, child) {
-              return MaterialApp(
-                navigatorObservers: [ChuckerFlutter.navigatorObserver],
-                initialRoute: Routes.login,
-                routes: {
-                  Routes.login: (context) => LoginPageScreen(),
-                  Routes.register: (context) => RegisterScreenPage(),
-                  Routes.home: (context) => HomeScreen()
+              return BlocBuilder<ThemeDataCubit, ThemeDataState>(
+                builder: (context, state) {
+                  if (kDebugMode) {
+                    debugPrint("ini adalah state main ${state.themeData}");
+                  }
+                  return MaterialApp(
+                    theme: state.themeData,
+                    navigatorKey: navigatorKey,
+                    navigatorObservers: [ChuckerFlutter.navigatorObserver],
+                    initialRoute: Routes.login,
+                    // routes: {
+                    //   Routes.login: (context) => LoginPageScreen(),
+                    //   Routes.register: (context) => RegisterScreenPage(),
+                    //   Routes.home: (context) => HomeScreen(),
+                    //   Routes.bottomNav: (context) => BottomNavigation(),
+                    // },
+                    debugShowCheckedModeBanner: false,
+                    onGenerateRoute: _appRouter.onGenerateRoute,
+                    home: LoginPageScreen(),
+                  );
                 },
-                debugShowCheckedModeBanner: false,
-                home: LoginPageScreen(),
               );
             },
-          )),
->>>>>>> master
+          ),
+        ),
+      ),
     );
   }
 }
 
-<<<<<<< HEAD
 //this project use flutter version 3.24.0 USE PURO OR FVM
-=======
-//this project use flutter version 3.24.0 USE PURO OR FVM
->>>>>>> master

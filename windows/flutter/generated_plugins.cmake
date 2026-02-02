@@ -6,7 +6,13 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
   firebase_auth
   firebase_core
+<<<<<<< HEAD
   rive_common
+=======
+  geolocator_windows
+  isar_flutter_libs
+  rive_native
+>>>>>>> master
   share_plus
   url_launcher_windows
 )

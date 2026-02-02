@@ -4,7 +4,12 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_linux
+<<<<<<< HEAD
   rive_common
+=======
+  isar_flutter_libs
+  rive_native
+>>>>>>> master
   url_launcher_linux
 )
 
