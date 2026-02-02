@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorTextFormField extends StatelessWidget {
-  String? error;
+  final String? error;
   final bool showIcon;
   final double iconSize;
   final double fontSize;
   final double marginTop;
-  int? lengthText;
+  final int? lengthText;
 
-  ErrorTextFormField({
+  const ErrorTextFormField({
     super.key,
     this.error,
     this.lengthText,
@@ -43,10 +43,7 @@ class ErrorTextFormField extends StatelessWidget {
                         error!,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: TextStyle(
-                          fontFamily: "DM Sans Regular",
-                          color: Colors.red,
-                        ),
+                        style: TextStyle(color: Colors.red),
                       ),
                     ),
                   ],

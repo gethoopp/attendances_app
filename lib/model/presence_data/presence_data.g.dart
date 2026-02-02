@@ -27,7 +27,7 @@ ResultPresence _$ResultPresenceFromJson(Map<String, dynamic> json) =>
       checkOut: json['check_out'] == null
           ? null
           : DateTime.parse(json['check_out'] as String),
-      attendanceDate: DateTime.parse(json['attendance_date']),
+      attendanceDate: DateTime.parse(json['attendance_date'] as String),
       status: json['status'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
     );
@@ -37,7 +37,7 @@ Map<String, dynamic> _$ResultPresenceToJson(ResultPresence instance) =>
       'id_attendance': instance.idAttendance,
       'user_id': instance.userId,
       'check_in': instance.checkIn.toIso8601String(),
-      'check_out': instance.checkOut,
+      'check_out': instance.checkOut?.toIso8601String(),
       'attendance_date': instance.attendanceDate.toIso8601String(),
       'status': instance.status,
       'created_at': instance.createdAt.toIso8601String(),

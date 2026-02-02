@@ -338,6 +338,7 @@ class _RegisterScreenContentState extends State<_RegisterScreenContent>
                                               isLoading
                                           ? Colors.grey.shade300
                                           : Colors.blue,
+
                                       textColor:
                                           validateState.hasEmptyField ||
                                               validateState.hasInvalidField ||

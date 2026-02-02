@@ -37,7 +37,12 @@ dependencies:
   slide_to_act: 
   animated_bottom_navigation_bar: 
   dart_either: ^2.0.0
+  intl:
+  geolocator: 
+  geocoding:
+  isar_flutter_libs: 
 
+  
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:

@@ -29,9 +29,17 @@ mixin WidgetMixin<T extends StatefulWidget> on State<T> {
     required DateTime selectedDate,
     required void Function(DateTime)? onDateChange,
   }) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue.shade50),
+    return EasyTheme(
+      data: EasyTheme.of(context).copyWithState(
+        selectedDayTheme: DayThemeData(
+          backgroundColor: Theme.of(context).colorScheme.surfaceTint,
+        ),
+        unselectedDayTheme: DayThemeData(
+          backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+        ),
+        selectedCurrentDayTheme: DayThemeData(
+          backgroundColor: Theme.of(context).colorScheme.surfaceTint,
+        ),
       ),
       child: EasyDateTimeLinePicker(
         firstDate: DateTime.now(),

@@ -2,10 +2,10 @@ import 'package:attendance_app/component/routes.dart';
 import 'package:attendance_app/component/url.dart';
 import 'package:attendance_app/interceptor/dio_client_interceptor.dart';
 import 'package:attendance_app/main.dart';
+import 'package:attendance_app/model/Total_data_worker/total_data_worker.dart';
 import 'package:attendance_app/model/presence_data/presence_data.dart';
 import 'package:attendance_app/repository/presence/base_presence.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 class CheckInRepository implements BasePresence {
   final dio = DioClientInterceptor.createDio();
@@ -68,14 +68,14 @@ class CheckInRepository implements BasePresence {
   }
 
   @override
-  Future<DataPresence> getUserData(int id, String token) async {
+  Future<DataPresence> getUserData(int id, String token, String date) async {
     try {
       final result = await dio.get(
         Url.getUserPresence,
         options: Options(headers: {"Authorization": "Bearer $token"}),
-        queryParameters: {"id_user": id},
+        queryParameters: {"id_user": id, "date": date},
       );
-      debugPrint("in hasil response ${result.data}");
+
       return DataPresence.fromJson(result.data);
     } on DioException catch (e) {
       switch (e.response?.statusCode) {
@@ -88,7 +88,9 @@ class CheckInRepository implements BasePresence {
         case 409:
           throw Exception(e.response?.data['message']);
         default:
-          throw Exception(e.response?.data['message'] ?? "Terjadi kesalahan");
+          throw Exception(
+            e.response?.data['message'] ?? "Terjadi kesalahan bos",
+          );
       }
     }
   }
@@ -97,16 +99,20 @@ class CheckInRepository implements BasePresence {
   Future<DataPresence> getUserByDate(
     int id,
     String token,
-    DateTime dateByNow,
+    String dateByNow,
   ) async {
     try {
       final result = await dio.post(
-        Url.getUserPresence,
+        Url.getUserByDate,
         options: Options(headers: {"Authorization": "Bearer $token"}),
         data: {"user_id": id, "attendance_date": dateByNow},
       );
-      debugPrint("in hasil response ${result.data}");
-      return DataPresence.fromJson(result.data);
+
+      if (result is Map<String, dynamic>) {
+        return DataPresence.fromJson(result.data);
+      } else {
+        throw Exception(result.toString());
+      }
     } on DioException catch (e) {
       switch (e.response?.statusCode) {
         case 404:
@@ -118,7 +124,37 @@ class CheckInRepository implements BasePresence {
         case 409:
           throw Exception(e.response?.data['message']);
         default:
-          throw Exception(e.response?.data['message'] ?? "Terjadi kesalahan");
+          throw Exception(
+            e.response?.data['message'] ?? "Terjadi kesalahan bos",
+          );
+      }
+    }
+  }
+
+  @override
+  Future<DataTotalWorker> getUserTotalData(int id, String token) async {
+    try {
+      final result = await dio.get(
+        Url.getTotalData,
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+        queryParameters: {"user_id": id},
+      );
+
+      return DataTotalWorker.fromJson(result.data);
+    } on DioException catch (e) {
+      switch (e.response?.statusCode) {
+        case 404:
+          throw Exception(e.response?.data['message']);
+        case 402:
+          throw Exception(e.response?.data['message']);
+        case 500:
+          throw Exception(e.response?.data['message']);
+        case 409:
+          throw Exception(e.response?.data['message']);
+        default:
+          throw Exception(
+            e.response?.data['message'] ?? "Terjadi kesalahan bos",
+          );
       }
     }
   }

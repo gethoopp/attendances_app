@@ -1,5 +1,6 @@
 import 'package:attendance_app/bloc/login_form/login_form_cubit.dart';
 import 'package:attendance_app/bloc/register/register_user_data/auth_user_cubit.dart';
+import 'package:attendance_app/component/assets.dart';
 import 'package:attendance_app/component/screen_argument.dart';
 import 'package:attendance_app/component/widget_mixin.dart';
 import 'package:attendance_app/extension/string_validate.dart';
@@ -41,6 +42,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> with WidgetMixin {
+  late String text;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -54,64 +57,8 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
           return SingleChildScrollView(
             child: Column(
               children: [
-                // Row(
-                //   children: [
-                //     Padding(
-                //       padding: EdgeInsets.only(
-                //         left: size.width * 0.07,
-                //       ),
-                //       child: Image(image: AssetImage(Assets.logo)),
-                //     )
-                //   ],
-                // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: size.width * 0.05,
-                        top: size.height * 0.1,
-                      ),
-                      child: Text.rich(
-                        TextSpan(
-                          text: ' Welcome Back (logo) \n ',
-                          style: GoogleFonts.outfit(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w800,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: 'to ',
-                              style: GoogleFonts.outfit(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'HR Attendee',
-                              style: GoogleFonts.outfit(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w800,
-                                color: const Color.fromARGB(255, 7, 76, 196),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: size.width * 0.07),
-                      child: Text(
-                        'Hello There, Login to Continue',
-                        style: GoogleFonts.outfit(color: Colors.grey),
-                      ),
-                    ),
-                  ],
-                ),
+                HeaderLogin(size: size),
+
                 Padding(
                   padding: EdgeInsets.only(top: size.height * 0.05),
                   child: Column(
@@ -166,89 +113,7 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
                   ],
                 ),
                 const SizedBox(height: 25),
-                BlocConsumer<AuthUserCubit, AuthUserState>(
-                  listener: (context, state) {
-                    if (state is RegisterAuthSucces) {
-                      Navigator.pushNamed(
-                        context,
-                        Routes.home,
-                        arguments: ScreenArguments(
-                          state.data.result!.idUsers!,
-                          state.data.token!,
-                        ),
-                      );
-                    }
-
-                    if (state is AuthUserErr) {
-                      showMyDialog(state.message);
-                    }
-                  },
-                  builder: (context, state) {
-                    return BlocSelector<
-                      LoginFormCubit,
-                      LoginFormState<LoginFormData>,
-                      FormFieldData
-                    >(
-                      selector: (statedata) => FormFieldData(
-                        validate: [
-                          statedata.data!.email,
-                          statedata.data!.password,
-                        ],
-                        validateForm: [
-                          statedata.data!.email.validateEmail,
-                          statedata.data!.password.validatePassword,
-                        ],
-                      ),
-                      builder: (context, validateState) {
-                        final isLoading = state is RegisterAuthLoading;
-                        debugPrint("ini state $isLoading ");
-                        return buttonLoginTap(
-                          onTap: () {
-                            if (validateState.hasEmptyField ||
-                                validateState.hasInvalidField ||
-                                isLoading) {
-                              return;
-                            }
-
-                            context.read<AuthUserCubit>().loginUser(
-                              email: stateData.data!.email!,
-                              pass: stateData.data!.password!,
-                            );
-                          },
-                          size,
-                          text: isLoading ? "" : "Login",
-                          colorbtn:
-                              validateState.hasEmptyField ||
-                                  validateState.hasInvalidField ||
-                                  isLoading
-                              ? Colors.grey.shade300
-                              : Colors.blue,
-                          validateState.hasEmptyField ||
-                                  validateState.hasInvalidField ||
-                                  isLoading
-                              ? Colors.grey.shade300
-                              : Colors.blue,
-                          textColor:
-                              validateState.hasEmptyField ||
-                                  validateState.hasInvalidField ||
-                                  isLoading
-                              ? Colors.black
-                              : Colors.white,
-                          child: isLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.blue,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : null,
-                        );
-                      },
-                    );
-                  },
-                ),
+                loginMethod(stateData, size),
                 Padding(
                   padding: EdgeInsets.only(top: size.height * 0.02),
                   child: Text(
@@ -262,8 +127,23 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
                     size,
                     text: 'Google',
                     colorbtn: Colors.transparent,
-                    null,
+                    Colors.black54,
                     textColor: Colors.black,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Assets.iconGoogle,
+                          width: 20.w,
+                          height: 20.h,
+                        ),
+                        SizedBox(width: 10.w),
+                        Text(
+                          "Google",
+                          style: GoogleFonts.outfit(color: Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -273,8 +153,23 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
                     size,
                     text: 'Apple ID',
                     colorbtn: Colors.transparent,
-                    null,
+                    Colors.black54,
                     textColor: Colors.black,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Assets.iconApple,
+                          width: 20.w,
+                          height: 20.h,
+                        ),
+                        SizedBox(width: 10.w),
+                        Text(
+                          "Apple Id",
+                          style: GoogleFonts.outfit(color: Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -301,6 +196,165 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
           );
         },
       ),
+    );
+  }
+
+  BlocConsumer<AuthUserCubit, AuthUserState> loginMethod(
+    LoginFormState<LoginFormData> stateData,
+    Size size,
+  ) {
+    return BlocConsumer<AuthUserCubit, AuthUserState>(
+      listener: (context, state) {
+        if (state is RegisterAuthSucces) {
+          // Navigator.pushReplacementNamed(
+          //   context,
+          //   Routes.home,
+          //   arguments: ScreenArguments(
+          //     state.data.result!.idUsers!,
+          //     state.data.token!,
+          //   ),
+          // );
+
+          Navigator.pushReplacementNamed(
+            context,
+            Routes.bottomNav,
+            arguments: ScreenArguments(
+              state.data.result!.idUsers!,
+              state.data.token!,
+            ),
+          );
+        }
+
+        if (state is AuthUserErr) {
+          showMyDialog(state.message);
+        }
+      },
+      builder: (context, state) {
+        return BlocSelector<
+          LoginFormCubit,
+          LoginFormState<LoginFormData>,
+          FormFieldData
+        >(
+          selector: (statedata) => FormFieldData(
+            validate: [statedata.data!.email, statedata.data!.password],
+            validateForm: [
+              statedata.data!.email.validateEmail,
+              statedata.data!.password.validatePassword,
+            ],
+          ),
+          builder: (context, validateState) {
+            final isLoading = state is RegisterAuthLoading;
+            debugPrint("ini state $isLoading ");
+            return buttonLoginTap(
+              onTap: () {
+                if (validateState.hasEmptyField ||
+                    validateState.hasInvalidField ||
+                    isLoading) {
+                  return;
+                }
+
+                context.read<AuthUserCubit>().loginUser(
+                  email: stateData.data!.email!,
+                  pass: stateData.data!.password!,
+                );
+              },
+              size,
+
+              text: isLoading ? "" : "Login",
+              colorbtn:
+                  validateState.hasEmptyField ||
+                      validateState.hasInvalidField ||
+                      isLoading
+                  ? Colors.grey.shade300
+                  : Colors.blue,
+              validateState.hasEmptyField ||
+                      validateState.hasInvalidField ||
+                      isLoading
+                  ? Colors.grey.shade300
+                  : Colors.blue,
+
+              textColor:
+                  validateState.hasEmptyField ||
+                      validateState.hasInvalidField ||
+                      isLoading
+                  ? Colors.black
+                  : Colors.white,
+              child: isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : null,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class HeaderLogin extends StatelessWidget {
+  const HeaderLogin({super.key, required this.size});
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: size.width * 0.05,
+                top: size.height * 0.1,
+              ),
+              child: Text.rich(
+                TextSpan(
+                  text: ' Welcome Back (logo) \n ',
+                  style: GoogleFonts.outfit(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'to ',
+                      style: GoogleFonts.outfit(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'HR Attendee',
+                      style: GoogleFonts.outfit(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                        color: const Color.fromARGB(255, 7, 76, 196),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: size.width * 0.07),
+              child: Text(
+                'Hello There, Login to Continue',
+                style: GoogleFonts.outfit(color: Colors.grey),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

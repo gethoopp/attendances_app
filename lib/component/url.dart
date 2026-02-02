@@ -10,8 +10,10 @@ class Url {
   static String loginUrl = 'api/login';
   static String getUser = 'api/data';
   static String getUserPresence = 'api/presence';
+  static String getUserByDate = 'api/getByDate';
   static String sendCheckin = 'api/checkIn';
   static String sendCheckOut = 'api/checkOut';
+  static String getTotalData = 'api/totalwork';
 
   //socket URL
   static String socketUrl = 'ws/input';

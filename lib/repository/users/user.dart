@@ -29,7 +29,9 @@ class GetUserData implements BaseUserRepository {
         case 409:
           throw Exception(e.response?.data['message']);
         default:
-          throw Exception(e.response?.data['message'] ?? "Terjadi kesalahan");
+          throw Exception(
+            e.response?.data['message'] ?? "Terjadi kesalahan bos",
+          );
       }
     }
   }
