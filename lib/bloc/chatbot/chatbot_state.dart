@@ -1,4 +1,6 @@
-class ChatbotMessageItem {
+import 'package:equatable/equatable.dart';
+
+class ChatbotMessageItem extends Equatable {
   final String text;
   final bool isUserMessage;
   final bool isStreaming;
@@ -20,9 +22,12 @@ class ChatbotMessageItem {
       isStreaming: isStreaming ?? this.isStreaming,
     );
   }
+
+  @override
+  List<Object?> get props => [text, isUserMessage, isStreaming];
 }
 
-class ChatbotState {
+class ChatbotState extends Equatable {
   final List<ChatbotMessageItem> messages;
   final bool isLoadingResponse;
   final String? errorMessage;
@@ -57,4 +62,7 @@ class ChatbotState {
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
+
+  @override
+  List<Object?> get props => [messages, isLoadingResponse, errorMessage];
 }

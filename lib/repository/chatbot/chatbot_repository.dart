@@ -22,7 +22,7 @@ class ChatbotRepository implements BaseChatbotRepository {
           "messages": messages.map((message) => message.toJson()).toList(),
       };
 
-      final response = await dio.post<ResponseBody>(
+      final response = await dio.post(
         Url.chatUrl,
         data: payload,
         options: Options(

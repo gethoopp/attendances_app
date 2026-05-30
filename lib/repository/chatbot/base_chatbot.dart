@@ -12,11 +12,7 @@ class ChatbotStreamChunk {
   final bool done;
   final String? error;
 
-  const ChatbotStreamChunk({
-    required this.reply,
-    required this.done,
-    this.error,
-  });
+  const ChatbotStreamChunk({this.reply = "", required this.done, this.error});
 }
 
 abstract class BaseChatbotRepository {

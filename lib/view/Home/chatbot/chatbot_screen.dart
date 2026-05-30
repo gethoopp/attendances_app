@@ -15,20 +15,27 @@ class ChatbotScreen extends StatefulWidget {
 
 class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _messageController = TextEditingController();
-  ChatbotCubit? _chatbotCubit;
+  final ScrollController _scrollController = ScrollController();
+  late final ChatbotCubit _chatbotCubit;
   ScreenArguments? _args;
+
+  @override
+  void initState() {
+    super.initState();
+    _chatbotCubit = ChatbotCubit(context.read<BaseChatbotRepository>());
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _args = ModalRoute.of(context)?.settings.arguments as ScreenArguments?;
-    _chatbotCubit ??= ChatbotCubit(context.read<BaseChatbotRepository>());
   }
 
   @override
   void dispose() {
     _messageController.dispose();
-    _chatbotCubit?.close();
+    _scrollController.dispose();
+    _chatbotCubit.close();
     super.dispose();
   }
 
@@ -39,20 +46,31 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       return;
     }
 
-    context.read<ChatbotCubit>().sendMessage(
-      message: message,
-      token: args.token,
-    );
+    _chatbotCubit.sendMessage(message: message, token: args.token);
 
     _messageController.clear();
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients) {
+        return;
+      }
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: _chatbotCubit!,
+      value: _chatbotCubit,
       child: BlocConsumer<ChatbotCubit, ChatbotState>(
         listener: (context, state) {
+          _scrollToBottom();
           if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
             ScaffoldMessenger.of(
               context,
@@ -67,6 +85,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 children: [
                   Expanded(
                     child: ListView.builder(
+                      controller: _scrollController,
                       padding: const EdgeInsets.all(16),
                       itemCount: state.messages.length,
                       itemBuilder: (context, index) {
