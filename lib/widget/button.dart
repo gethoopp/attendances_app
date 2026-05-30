@@ -10,6 +10,9 @@ Widget buttonLogin(
   required String hint,
   void Function(String)? onChanged,
   bool isHaseror = false,
+  Widget? widget,
+  bool isShowPassword = false,
+
   TextInputType? textInput, // calllback untuk onchanged function
 }) {
   return Column(
@@ -36,6 +39,74 @@ Widget buttonLogin(
               fontWeight: FontWeight.w200,
               fontSize: 14,
             ),
+
+            suffixIcon: widget,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.grey),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: isHaseror ? Colors.red : Colors.blueAccent,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: isHaseror ? Colors.red : Colors.grey,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget buttonLoginEmail(
+  Size size, {
+  required String text,
+  required bool obs,
+  required String label,
+  required String hint,
+  void Function(String)? onChanged,
+  bool isHaseror = false,
+  TextInputType? textInput, // calllback untuk onchanged function
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: const TextStyle(
+          fontFamily: "DM Sans Semibold",
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
+      const SizedBox(height: 8),
+      SizedBox(
+        width: 350.w,
+        child: TextFormField(
+          onChanged: onChanged,
+          keyboardType: textInput,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(
+              fontFamily: "DM Sans Regular",
+              fontWeight: FontWeight.w200,
+              fontSize: 14,
+            ),
+
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: Colors.grey),

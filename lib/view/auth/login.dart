@@ -63,7 +63,7 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
                   padding: EdgeInsets.only(top: size.height * 0.05),
                   child: Column(
                     children: [
-                      buttonLogin(
+                      buttonLoginEmail(
                         size,
                         text: 'Email',
                         label: 'Email',
@@ -86,6 +86,19 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
                         label: 'Password',
                         hint: 'Masukkan password kamu',
                         obs: true,
+                        widget: InkWell(
+                          onTap: () =>
+                              context.read<LoginFormCubit>().onTapShowPassword(
+                                stateData.data!,
+                                stateData.data!.securePassword,
+                              ),
+
+                          child: Icon(
+                            stateData.data!.securePassword
+                                ? Icons.check_box_outline_blank
+                                : Icons.check_box,
+                          ),
+                        ),
                         onChanged: (value) {
                           context.read<LoginFormCubit>().onChangePassword(
                             stateData.data!,
@@ -212,7 +225,7 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
           //   arguments: ScreenArguments(
           //     state.data.result!.idUsers!,
           //     state.data.token!,
-          //   ),
+          //   )
           // );
 
           Navigator.pushReplacementNamed(
@@ -244,7 +257,7 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
           ),
           builder: (context, validateState) {
             final isLoading = state is RegisterAuthLoading;
-            debugPrint("ini state $isLoading ");
+
             return buttonLoginTap(
               onTap: () {
                 if (validateState.hasEmptyField ||
