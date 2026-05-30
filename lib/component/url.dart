@@ -14,6 +14,7 @@ class Url {
   static String sendCheckin = 'api/checkIn';
   static String sendCheckOut = 'api/checkOut';
   static String getTotalData = 'api/totalwork';
+  static String chatUrl = 'api/chat';
 
   //socket URL
   static String socketUrl = 'ws/input';

@@ -34,7 +34,7 @@ class AppRouter {
 
       case Routes.chatbot:
         return MaterialPageRoute(
-          settings: const RouteSettings(name: Routes.chatbot),
+          settings: RouteSettings(arguments: args, name: Routes.chatbot),
           builder: (_) => const ChatbotScreen(),
         );
 

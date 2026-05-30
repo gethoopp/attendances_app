@@ -93,7 +93,13 @@ class _HomeScreenPageState extends State<HomeScreenPage> with WidgetMixin {
           final data = stateData.data;
           return Scaffold(
             floatingActionButton: FloatingActionButton(
-              onPressed: () => Navigator.of(context).pushNamed(Routes.chatbot),
+              onPressed: () => Navigator.of(context).pushNamed(
+                Routes.chatbot,
+                arguments: ScreenArguments(
+                  stateData.data.result!.idUsers!,
+                  widget.token,
+                ),
+              ),
               child: const Icon(Icons.chat_bubble_outline),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

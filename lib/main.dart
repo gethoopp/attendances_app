@@ -2,6 +2,7 @@ import 'package:attendance_app/bloc/them_data/theme_data_cubit.dart';
 import 'package:attendance_app/component/routes.dart';
 import 'package:attendance_app/core/amqp_conn/amqp_conn.dart';
 import 'package:attendance_app/extension/app_router.dart';
+import 'package:attendance_app/repository/chatbot/chatbot.dart';
 import 'package:attendance_app/repository/locate_user/locate_repo.dart';
 import 'package:attendance_app/repository/presence/presence.dart';
 import 'package:attendance_app/repository/total_worker/total_worker.dart';
@@ -30,6 +31,7 @@ void main() async {
   final BaseUserRepository userRepository = GetUserData();
   final BasePresence basePresence = CheckInRepository();
   final BasetotalDataworker basetotalDataworker = BaseTotalWorker();
+  final BaseChatbotRepository baseChatbotRepository = ChatbotRepository();
   LocateUser().getPermisionLocation();
 
   runApp(
@@ -37,6 +39,7 @@ void main() async {
       userRepository: userRepository,
       basePresence: basePresence,
       basetotalDataworker: basetotalDataworker,
+      baseChatbotRepository: baseChatbotRepository,
     ),
   );
 }
@@ -45,22 +48,27 @@ class MyApp extends StatelessWidget {
   final BaseUserRepository userRepository;
   final BasePresence basePresence;
   final BasetotalDataworker basetotalDataworker;
+  final BaseChatbotRepository baseChatbotRepository;
   const MyApp({
     super.key,
     required this.userRepository,
     required this.basePresence,
     required this.basetotalDataworker,
+    required this.baseChatbotRepository,
   });
 
   @override
   Widget build(BuildContext context) {
-    final _appRouter = AppRouter();
+    final appRouter = AppRouter();
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<BaseUserRepository>.value(value: userRepository),
         RepositoryProvider<BasePresence>.value(value: basePresence),
         RepositoryProvider<BasetotalDataworker>.value(
           value: basetotalDataworker,
+        ),
+        RepositoryProvider<BaseChatbotRepository>.value(
+          value: baseChatbotRepository,
         ),
       ],
       child: BlocProvider(
@@ -92,7 +100,7 @@ class MyApp extends StatelessWidget {
                     //   Routes.bottomNav: (context) => BottomNavigation(),
                     // },
                     debugShowCheckedModeBanner: false,
-                    onGenerateRoute: _appRouter.onGenerateRoute,
+                    onGenerateRoute: appRouter.onGenerateRoute,
                     home: LoginPageScreen(),
                   );
                 },
