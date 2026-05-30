@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     final selectDate = DateTime.now().toUtc();
     result = ConvertDate().convertDate(selectDate).toString();
     args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;

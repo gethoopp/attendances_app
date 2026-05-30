@@ -21,12 +21,6 @@ class RegisterFormCubit extends Cubit<RegisterFormState<RegisterFormData>> {
     emit(RegisterFormSucces(latestFormData));
   }
 
-  void onChangeDepartement(
-      RegisterFormData latestFormData, String departement) {
-    latestFormData = latestFormData.copyWith(departement: departement);
-    emit(RegisterFormSucces(latestFormData));
-  }
-
   void onChangeEmail(RegisterFormData latestFormData, String email) {
     latestFormData = latestFormData.copyWith(email: email);
     emit(RegisterFormSucces(latestFormData));
@@ -34,6 +28,14 @@ class RegisterFormCubit extends Cubit<RegisterFormState<RegisterFormData>> {
 
   void onChangePassword(RegisterFormData latestFormData, String password) {
     latestFormData = latestFormData.copyWith(password: password);
+    emit(RegisterFormSucces(latestFormData));
+  }
+
+  void onChangeDepartement(
+    RegisterFormData latestFormData,
+    String departement,
+  ) {
+    latestFormData = latestFormData.copyWith(departement: departement);
     emit(RegisterFormSucces(latestFormData));
   }
 
