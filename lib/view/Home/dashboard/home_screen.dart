@@ -5,6 +5,7 @@ import 'package:attendance_app/bloc/user_presence/user_presence_cubit.dart';
 import 'package:attendance_app/bloc/presence/presence_cubit.dart';
 import 'package:attendance_app/bloc/register/register_user_data/auth_user_cubit.dart';
 import 'package:attendance_app/component/assets.dart';
+import 'package:attendance_app/component/routes.dart';
 import 'package:attendance_app/component/screen_argument.dart';
 import 'package:attendance_app/component/widget_mixin.dart';
 import 'package:attendance_app/core/convert_date/convert_date.dart';
@@ -91,6 +92,11 @@ class _HomeScreenPageState extends State<HomeScreenPage> with WidgetMixin {
         if (stateData is RegisterAuthSucces) {
           final data = stateData.data;
           return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => Navigator.of(context).pushNamed(Routes.chatbot),
+              child: const Icon(Icons.chat_bubble_outline),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             body: RefreshIndicator(
               onRefresh: () =>
                   context.read<UserPresenceCubit>().getUserPresence(

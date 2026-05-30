@@ -2,6 +2,7 @@ import 'package:attendance_app/component/routes.dart';
 import 'package:attendance_app/component/screen_argument.dart';
 import 'package:attendance_app/view/auth/login.dart';
 import 'package:attendance_app/view/auth/register.dart';
+import 'package:attendance_app/view/Home/chatbot/chatbot_screen.dart';
 import 'package:attendance_app/widget/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: RouteSettings(arguments: args, name: Routes.register),
           builder: (_) => RegisterScreenPage(),
+        );
+
+      case Routes.chatbot:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: Routes.chatbot),
+          builder: (_) => const ChatbotScreen(),
         );
 
       default:

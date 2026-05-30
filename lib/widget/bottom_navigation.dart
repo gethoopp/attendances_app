@@ -54,14 +54,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
         final data = state.themeData;
         return Scaffold(
           body: IndexedStack(index: activeIndex, children: pageList),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              // FAB action here
-            },
-            child: const Icon(Icons.add),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: AnimatedBottomNavigationBar.builder(
             backgroundColor: Theme.of(context).colorScheme.surface,
             itemCount: data.brightness == Brightness.light
