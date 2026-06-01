@@ -31,7 +31,7 @@ class ChatbotRepository implements BaseChatbotRepository {
         ),
       );
 
-      final responseBody = response.data;
+      final responseBody = response.data as ResponseBody;
       if (responseBody == null) {
         throw Exception("Respons stream chatbot tidak tersedia");
       }
