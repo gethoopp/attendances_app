@@ -6,7 +6,7 @@ import 'package:attendance_app/repository/chatbot/base_chatbot.dart';
 import 'package:dio/dio.dart';
 
 class ChatbotRepository implements BaseChatbotRepository {
-  final Dio dio = DioClientInterceptor.createDio();
+  final Dio dio = DioClientInterceptor.createDio(includeChucker: false);
 
   @override
   Stream<ChatbotStreamChunk> streamChat({

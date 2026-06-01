@@ -5,11 +5,13 @@ import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 
 class DioClientInterceptor {
-  static Dio createDio() {
+  static Dio createDio({bool includeChucker = true}) {
     final dio = Dio(
       BaseOptions(
         baseUrl: Url.baseUrl,
-        sendTimeout: Duration(milliseconds: 300),
+        connectTimeout: const Duration(seconds: 10),
+        sendTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 60),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -56,7 +58,9 @@ class DioClientInterceptor {
       ),
     );
 
-    dio.interceptors.add(ChuckerDioInterceptor());
+    if (includeChucker) {
+      dio.interceptors.add(ChuckerDioInterceptor());
+    }
 
     return dio;
   }
