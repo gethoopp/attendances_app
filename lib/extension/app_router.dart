@@ -1,5 +1,6 @@
 import 'package:attendance_app/component/routes.dart';
 import 'package:attendance_app/component/screen_argument.dart';
+import 'package:attendance_app/view/Home/dashboard/home_screen.dart';
 import 'package:attendance_app/view/auth/login.dart';
 import 'package:attendance_app/view/auth/register.dart';
 import 'package:attendance_app/view/Home/chatbot/chatbot_screen.dart';
@@ -36,6 +37,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: RouteSettings(arguments: args, name: Routes.chatbot),
           builder: (_) => const ChatbotScreen(),
+        );
+
+      case Routes.home:
+        return MaterialPageRoute(
+          settings: RouteSettings(arguments: args, name: Routes.home),
+          builder: (_) => HomeScreen(args: args!, result: ""),
         );
 
       default:

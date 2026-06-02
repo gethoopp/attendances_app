@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.android.attendance_app"
+    namespace = "com.staffsync.android"
     compileSdkVersion 35
     ndkVersion = "27.0.12077973"
 
@@ -26,7 +26,7 @@ android {
 
 
     defaultConfig {
-        applicationId = "com.android.attendance_app"
+        applicationId = "com.staffsync.android"
         minSdkVersion 24
         targetSdkVersion 35
         versionCode = flutter.versionCode

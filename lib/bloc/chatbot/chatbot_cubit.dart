@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:attendance_app/bloc/chatbot/chatbot_state.dart';
 import 'package:attendance_app/repository/chatbot/base_chatbot.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 
 class ChatbotCubit extends Cubit<ChatbotState> {
   final BaseChatbotRepository chatbotRepository;
@@ -174,6 +175,10 @@ class ChatbotCubit extends Cubit<ChatbotState> {
         text: "Maaf, $errorMessage",
         isUserMessage: false,
       );
+
+      if (kDebugMode) {
+        debugPrint("ini error message $errorMessage");
+      }
     }
 
     emit(

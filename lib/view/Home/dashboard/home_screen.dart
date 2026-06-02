@@ -23,7 +23,9 @@ import 'package:intl/intl.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  late ScreenArguments args;
+  late String result;
+  HomeScreen({super.key, required this.args, required this.result});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

@@ -4,7 +4,7 @@ class EnvConfig {
     'BASE_URL',
 
     /*Dev*/
-    defaultValue: 'http://192.168.0.6:85/',
+    defaultValue: 'http://192.168.1.17:8080/',
 
     /*Prod*/
     // defaultValue: 'https://go-attendance-app-f1a53d9d812c.herokuapp.com/',

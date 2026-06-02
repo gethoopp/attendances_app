@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:80805426642:android:f2cfba0bb0f37b22b1440b",
+        "mobilesdk_app_id": "1:80805426642:android:8dc7003388d7795ab1440b",
         "android_client_info": {
-          "package_name": "com.android.attendance_app"
+          "package_name": "com.staffsync.android"
         }
       },
       "oauth_client": [

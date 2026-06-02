@@ -1,4 +1,4 @@
-package com.android.attendance_app
+package com.staffsync.android
 
 import io.flutter.embedding.android.FlutterActivity
 

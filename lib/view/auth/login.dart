@@ -9,6 +9,7 @@ import 'package:attendance_app/model/login_form/login_form.dart';
 import 'package:attendance_app/repository/users/base_user.dart';
 import 'package:attendance_app/widget/button.dart';
 import 'package:attendance_app/widget/error_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,9 +52,6 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
       resizeToAvoidBottomInset: false,
       body: BlocBuilder<LoginFormCubit, LoginFormState<LoginFormData>>(
         builder: (context, stateData) {
-          if (stateData.data == null) {
-            return const Center(child: CircularProgressIndicator());
-          }
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -218,17 +216,11 @@ class LoginPageState extends State<LoginPage> with WidgetMixin {
   ) {
     return BlocConsumer<AuthUserCubit, AuthUserState>(
       listener: (context, state) {
+        if (kDebugMode) {
+          debugPrint("ini state sekarang $state");
+        }
         if (state is RegisterAuthSucces) {
-          // Navigator.pushReplacementNamed(
-          //   context,
-          //   Routes.home,
-          //   arguments: ScreenArguments(
-          //     state.data.result!.idUsers!,
-          //     state.data.token!,
-          //   )
-          // );
-
-          Navigator.pushReplacementNamed(
+          Navigator.pushNamed(
             context,
             Routes.bottomNav,
             arguments: ScreenArguments(

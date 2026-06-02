@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:attendance_app/bloc/them_data/theme_data_cubit.dart';
 import 'package:attendance_app/component/assets.dart';
 import 'package:attendance_app/component/screen_argument.dart';
+import 'package:attendance_app/core/convert_date/convert_date.dart';
 import 'package:attendance_app/view/Home/dashboard/home_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -18,10 +19,13 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int activeIndex = 0;
   late ScreenArguments args;
+  late String result;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final selectDate = DateTime.now().toUtc();
+    result = ConvertDate().convertDate(selectDate).toString();
     args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
   }
 
@@ -41,10 +45,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   /// ✅ Pages used by bottom navigation
   late final List<Widget> pageList = [
-    const HomeScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
+    HomeScreen(args: args, result: result),
+    HomeScreen(args: args, result: result),
+    HomeScreen(args: args, result: result),
+    HomeScreen(args: args, result: result),
   ];
 
   @override

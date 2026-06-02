@@ -40,7 +40,7 @@ class ChatbotRepository implements BaseChatbotRepository {
       var hasParsedChunk = false;
       await for (final line
           in responseBody.stream
-              .map((chunk) => chunk.toList())
+              .map((chunk) => chunk.toList().cast<int>())
               .transform(utf8.decoder)
               .transform(const LineSplitter())) {
         rawResponseBuffer.writeln(line);
