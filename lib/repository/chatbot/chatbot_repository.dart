@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:attendance_app/component/url.dart';
 import 'package:attendance_app/interceptor/dio_client_interceptor.dart';
@@ -40,7 +42,7 @@ class ChatbotRepository implements BaseChatbotRepository {
       var hasParsedChunk = false;
       await for (final line
           in (responseBody as ResponseBody).stream
-              .transform(utf8.decoder)
+              .transform(utf8.decoder as StreamTransformer<Uint8List, dynamic>)
               .transform(const LineSplitter())) {
         rawResponseBuffer.writeln(line);
         final trimmed = line.trim();
