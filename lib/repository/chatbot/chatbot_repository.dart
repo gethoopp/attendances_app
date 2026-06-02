@@ -39,8 +39,7 @@ class ChatbotRepository implements BaseChatbotRepository {
       final rawResponseBuffer = StringBuffer();
       var hasParsedChunk = false;
       await for (final line
-          in responseBody.stream
-              .map((chunk) => chunk.toList())
+          in (responseBody as ResponseBody).stream
               .transform(utf8.decoder)
               .transform(const LineSplitter())) {
         rawResponseBuffer.writeln(line);
